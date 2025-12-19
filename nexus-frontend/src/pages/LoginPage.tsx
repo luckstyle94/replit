@@ -83,7 +83,7 @@ export function LoginPage() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         error={emailError}
-        isValid={submitted && email.trim() && !emailError}
+        isValid={submitted && !!email.trim() && !emailError}
       />
 
       <Input
@@ -96,7 +96,7 @@ export function LoginPage() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         error={passwordError}
-        isValid={submitted && password && !passwordError}
+        isValid={submitted && !!password && !passwordError}
       />
 
       <Button type="submit" loading={loading} fullWidth>

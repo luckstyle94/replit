@@ -113,3 +113,20 @@ nexus-frontend/
 - CSS-in-file para melhor co-location
 - Classes BEM para nomeação
 - Variáveis CSS para fácil customização
+
+## 🧪 Credenciais de Teste (Mock API Habilitada)
+
+### Login Sem MFA
+```
+Email: test@example.com
+Senha: Test123!
+```
+
+### Login Com MFA (Autenticador)
+```
+Email: mfa@example.com
+Senha: Test123!
+Código MFA: 123456 (ou qualquer 6 dígitos)
+```
+
+Ver `TESTE_CREDENCIAIS.md` para todos os detalhes de teste.
