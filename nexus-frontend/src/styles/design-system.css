@@ -4,25 +4,25 @@
   /* Colors */
   --color-primary: #4f46e5;
   --color-primary-hover: #4338ca;
-  --color-primary-light: #eef2ff;
+  --color-primary-light: #1f2937;
   --color-success: #10b981;
-  --color-success-light: #ecfdf5;
+  --color-success-light: #064e3b;
   --color-error: #ef4444;
-  --color-error-light: #fef2f2;
+  --color-error-light: #7f1d1d;
   --color-warning: #f59e0b;
-  --color-warning-light: #fffbeb;
+  --color-warning-light: #78350f;
   --color-info: #3b82f6;
-  --color-info-light: #eff6ff;
+  --color-info-light: #1e3a8a;
 
-  /* Neutrals */
-  --color-text-primary: #111827;
-  --color-text-secondary: #374151;
-  --color-text-tertiary: #6b7280;
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f9fafb;
-  --color-bg-tertiary: #f3f4f6;
-  --color-border: #e5e7eb;
-  --color-border-light: #f3f4f6;
+  /* Neutrals - Mid-Dark Charcoal/Slate Theme */
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #d1d5db;
+  --color-text-tertiary: #9ca3af;
+  --color-bg-primary: #1f2937;
+  --color-bg-secondary: #111827;
+  --color-bg-tertiary: #0f172a;
+  --color-border: #374151;
+  --color-border-light: #4b5563;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -89,7 +89,7 @@ body {
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
-  background-color: var(--color-bg-primary);
+  background-color: var(--color-bg-secondary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

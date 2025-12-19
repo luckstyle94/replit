@@ -75,7 +75,7 @@ export async function processMockRequest<T>(
   // Verify OTP
   if (path.includes("/auth/verify-otp") && options.method === "POST") {
     const body = options.body as { code: string };
-    const result = mockCompleteMfaChallenge(body.code);
+    const result = mockCompleteMfaChallenge(body.code, "mfa@example.com");
 
     if ("token" in result) {
       return result as T;
@@ -86,7 +86,7 @@ export async function processMockRequest<T>(
 
   // Confirm MFA
   if (path.includes("/auth/confirm-mfa") && options.method === "POST") {
-    const result = mockCompleteMfaChallenge((options.body as any).code);
+    const result = mockCompleteMfaChallenge((options.body as any).code, "mfa@example.com");
 
     if ("token" in result) {
       return result as T;

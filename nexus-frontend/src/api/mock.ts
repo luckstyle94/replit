@@ -112,18 +112,18 @@ export function mockMfaSetup(mfaToken: string): MfaSetupData | null {
 }
 
 export function mockVerifyMfaCode(code: string): boolean {
-  // Para teste, aceita o código fixo ou qualquer código de 6 dígitos nos últimos 30 segundos
+  // Para teste, aceita o código fixo ou qualquer código de 6 dígitos
   if (code === VALID_MFA_CODE) return true;
 
   // Simula validação de TOTP aceitando qualquer código de 6 dígitos
   if (/^\d{6}$/.test(code)) {
-    return Math.random() > 0.3; // 70% de chance de sucesso
+    return true; // 100% de sucesso no desenvolvimento
   }
 
   return false;
 }
 
-export function mockCompleteMfaChallenge(code: string): LoginSuccess | LoginErrorData {
+export function mockCompleteMfaChallenge(code: string, email?: string): LoginSuccess | LoginErrorData {
   if (!mockVerifyMfaCode(code)) {
     return {
       error: "Código inválido ou expirado",
@@ -131,7 +131,8 @@ export function mockCompleteMfaChallenge(code: string): LoginSuccess | LoginErro
     };
   }
 
+  const tokenEmail = email || "mfa@example.com";
   return {
-    token: `mock_token_mfa@example.com_${Date.now()}`,
+    token: `mock_token_${tokenEmail}_${Date.now()}`,
   };
 }

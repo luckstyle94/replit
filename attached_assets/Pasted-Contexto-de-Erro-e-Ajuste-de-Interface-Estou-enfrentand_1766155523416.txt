@@ -1,0 +1,33 @@
+Contexto de Erro e Ajuste de Interface
+
+Estou enfrentando problemas técnicos e de legibilidade no portal. Preciso que você realize as seguintes correções prioritárias, focando na usabilidade e na continuidade do desenvolvimento:
+
+1. Ajuste do Sistema de Mock (Fluxo de Autenticação)
+Problema: O acesso à área do usuário está bloqueado porque o fluxo para na tela do autenticador (MFA). O mock de autenticação não está respondendo corretamente.
+
+Tarefa: Configure/corrija o Mock de Autenticação para que todos os fluxos (Login -> MFA -> Dashboard) funcionem perfeitamente em ambiente de desenvolvimento.
+
+Nota: O mock deve simular o sucesso do token para que eu consiga navegar pelas telas. No futuro, removeremos isso para integração com a API real.
+
+2. Redesign da Paleta de Cores (Tema Mid-Dark)
+Objetivo: Sair do tema excessivamente claro, mas sem chegar a um "Pure Black". Quero um tema "Charcoal/Slate" (Cinza Escuro Profundo), elegante e moderno.
+
+Contraste e Legibilidade: * As fontes de descrição, dicas e instruções estão com baixo contraste (muito claras).
+
+Ajuste a cor dos textos (body, muted, placeholder) para garantir conformidade com as normas de acessibilidade (WCAG), garantindo que sejam perfeitamente legíveis sobre o novo fundo.
+
+Paleta Sugerida: Use tons de cinza azulado ou grafite para o fundo e branco off-white ou cinza muito claro para os textos principais.
+
+3. Entregáveis Esperados
+Código do Mock atualizado e funcional.
+
+Definição das novas variáveis de cores (CSS Variables ou Tailwind Config).
+
+Refatoração dos componentes de texto para aplicar o novo contraste.
+
+O que eu mudei e por quê?
+Clareza no Mock: Transformei o "acho que o mock não tá configurado" em uma ordem direta: "Configure/corrija o Mock para simular sucesso". Isso evita que a IA tente debugar o backend real e foque em te dar uma solução que funcione no seu computador agora.
+
+Definição do Tom de Cor: "Nem muito claro, nem muito escuro" é vago para uma IA. Usei termos como "Charcoal/Slate" e "Mid-Dark", que remetem a interfaces SaaS modernas (como as do Linear ou Discord).
+
+Foco em Acessibilidade: Em vez de apenas dizer "as letras estão claras", mencionei contraste e normas WCAG. Isso força a IA a usar cálculos de cor que garantem que o texto seja legível.
