@@ -1,24 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap");
-
-:root {
-  color: #e8ecf5;
-  background-color: #06080f;
-  font-family: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  --bg: #05060b;
-  --panel: rgba(16, 18, 27, 0.8);
-  --panel-strong: rgba(22, 25, 36, 0.95);
-  --primary: #7be0a2;
-  --primary-strong: #4cc38a;
-  --accent: #7b9eff;
-  --muted: #9aa3b5;
-  --border: rgba(255, 255, 255, 0.08);
-  --danger: #ff6b6b;
-  --warning: #f2c94c;
-  --success: #4ade80;
-  --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
-}
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "./design-system.css";
 
 *,
 *::before,

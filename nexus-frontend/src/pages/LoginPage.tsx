@@ -4,8 +4,8 @@ import { useAuth } from "../state/auth";
 import { getErrorMessage } from "../utils/apiError";
 import { Alert } from "../components/ui/Alert";
 import { Button } from "../components/ui/Button";
-import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
+import "./LoginPage.css";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ export function LoginPage() {
       }
     } catch (err) {
       const parsed = getErrorMessage(err);
-      setMessage(parsed.message || "Falha no login.");
+      setMessage(parsed.message || "Não foi possível entrar. Verifique suas credenciais.");
     } finally {
       setLoading(false);
     }
@@ -49,91 +49,91 @@ export function LoginPage() {
 
   const emailError =
     submitted && !email.trim()
-      ? "Informe seu e-mail."
-      : submitted && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email.trim())
-      ? "Digite um e-mail válido."
+      ? "E-mail obrigatório"
+      : submitted && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+      ? "E-mail inválido"
       : undefined;
-  const passwordError = submitted && !password ? "Informe sua senha." : undefined;
+  const passwordError = submitted && !password ? "Senha obrigatória" : undefined;
 
   return (
-    <div className="grid two">
-      <Card strong title="Entrar">
-        <p className="muted small">Use seu e-mail e senha para continuar.</p>
-        {mfaStage && (
-          <div className="mb-12">
-            <Alert variant="info" title="Verificação em andamento">
-              Há uma confirmação pendente. Continue em{" "}
-              <Link to={mfaStage.kind === "challenge" ? "/mfa/challenge" : "/mfa/setup"}>
-                {mfaStage.kind === "challenge" ? "Confirmar código" : "Configurar autenticador"}
-              </Link>
-              .
-            </Alert>
-          </div>
-        )}
-        {message && (
-          <Alert variant="error" title="Não foi possível entrar">
-            {message}
-          </Alert>
-        )}
-        <form className="stack" onSubmit={handleSubmit}>
-          <Input
-            label="E-mail"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            error={emailError}
-          />
-          <Input
-            label="Senha"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            error={passwordError}
-          />
-          <Button type="submit" loading={loading}>
-            Entrar
-          </Button>
-          <div className="divider">
-            <span>ou</span>
-          </div>
-          <Button
-            variant="ghost"
-            type="button"
-            onClick={async () => {
-              setMessage(null);
-              setSocialLoading(true);
-              try {
-                const url = await startSocialLogin("google");
-                window.location.href = url;
-              } catch (err) {
-                const parsed = getErrorMessage(err);
-                setMessage(parsed.message || "Não foi possível iniciar o login com Google.");
-              } finally {
-                setSocialLoading(false);
-              }
-            }}
-            disabled={socialLoading}
-          >
-            {socialLoading ? "Redirecionando..." : "Continuar com Google"}
-          </Button>
-          <div className="muted small">
-            <Link to="/forgot">Esqueci minha senha</Link> · <Link to="/reset">Já tenho um código</Link>
-          </div>
-        </form>
-      </Card>
-      <Card title="Dicas rápidas">
-        <ul className="muted small list-indent">
-          <li>Se solicitado, confirme com o código do seu autenticador.</li>
-          <li>Está sem acesso? Use “Esqueci minha senha”.</li>
-          <li>Por segurança, sua sessão expira automaticamente com o tempo.</li>
-        </ul>
-      </Card>
-    </div>
+    <form className="login-form" onSubmit={handleSubmit}>
+      {mfaStage && (
+        <Alert variant="info" title="Autenticação em andamento">
+          Você tem uma verificação pendente. Continue em{" "}
+          <Link to={mfaStage.kind === "challenge" ? "/mfa/challenge" : "/mfa/setup"}>
+            {mfaStage.kind === "challenge" ? "confirmar seu código" : "configurar seu autenticador"}
+          </Link>
+          .
+        </Alert>
+      )}
+
+      {message && (
+        <Alert variant="error" title="Erro ao entrar">
+          {message}
+        </Alert>
+      )}
+
+      <Input
+        label="E-mail"
+        name="email"
+        type="email"
+        placeholder="seu@email.com"
+        autoComplete="email"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        error={emailError}
+        isValid={submitted && email.trim() && !emailError}
+      />
+
+      <Input
+        label="Senha"
+        name="password"
+        type="password"
+        placeholder="••••••••"
+        autoComplete="current-password"
+        required
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        error={passwordError}
+        isValid={submitted && password && !passwordError}
+      />
+
+      <Button type="submit" loading={loading} fullWidth>
+        {loading ? "Entrando..." : "Entrar"}
+      </Button>
+
+      <div className="login-divider">
+        <span>ou</span>
+      </div>
+
+      <Button
+        variant="secondary"
+        type="button"
+        fullWidth
+        onClick={async () => {
+          setMessage(null);
+          setSocialLoading(true);
+          try {
+            const url = await startSocialLogin("google");
+            window.location.href = url;
+          } catch (err) {
+            const parsed = getErrorMessage(err);
+            setMessage(parsed.message || "Não foi possível iniciar o login com Google.");
+          } finally {
+            setSocialLoading(false);
+          }
+        }}
+        disabled={socialLoading}
+      >
+        {socialLoading ? "Redirecionando..." : "Continuar com Google"}
+      </Button>
+
+      <div className="login-footer">
+        <Link to="/forgot">Esqueci minha senha</Link>
+        <span className="separator">•</span>
+        <Link to="/reset">Usar código de recuperação</Link>
+      </div>
+    </form>
   );
 }
