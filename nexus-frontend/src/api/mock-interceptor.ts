@@ -23,11 +23,13 @@ export function shouldUseMock(path: string): boolean {
   if (!ENABLE_MOCK) return false;
 
   const mockPaths = [
+    "/login",
     "/auth/login",
     "/auth/verify-otp",
     "/auth/setup-mfa",
     "/auth/confirm-mfa",
     "/users/me",
+    "/me",
   ];
 
   return mockPaths.some((p) => path.includes(p));
@@ -40,7 +42,7 @@ export async function processMockRequest<T>(
   console.log("[MOCK] Interceptando:", path, "Body:", options.body);
 
   // Login
-  if (path.includes("/auth/login") && options.method === "POST") {
+  if ((path.includes("/login") || path.includes("/auth/login")) && options.method === "POST") {
     const body = options.body as { email: string; password: string };
     const result = mockLogin(body.email, body.password);
 
@@ -52,7 +54,7 @@ export async function processMockRequest<T>(
   }
 
   // Get current user
-  if (path.includes("/users/me") && options.method === "GET") {
+  if ((path.includes("/me") || path.includes("/users/me")) && options.method === "GET") {
     const user = mockGetUser(options.token || "");
     if (!user) {
       throw new ApiError("Unauthorized", 401);

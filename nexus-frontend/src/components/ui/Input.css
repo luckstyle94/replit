@@ -22,16 +22,16 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background-color: var(--color-bg-primary);
-  color: #111827;
+  color: #000000 !important;
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
-  font-weight: 500;
+  font-weight: 600 !important;
   transition: all var(--transition-fast);
 }
 
 .input::placeholder {
-  color: #9ca3af;
-  font-weight: 400;
+  color: #6b7280 !important;
+  font-weight: 500 !important;
 }
 
 .input:focus {
