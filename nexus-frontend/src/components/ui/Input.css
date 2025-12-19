@@ -8,6 +8,8 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
+  display: block;
+  margin-bottom: var(--space-sm);
 }
 
 .input-container {
@@ -37,7 +39,7 @@
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px var(--color-primary-light);
+  box-shadow: 0 0 0 3px rgba(91, 122, 255, 0.15), 0 0 0 1px var(--color-primary);
 }
 
 .input:disabled {

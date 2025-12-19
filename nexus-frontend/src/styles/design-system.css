@@ -1,28 +1,28 @@
 /* Design System - Clean & Professional (Stripe/Vercel Inspired) */
 
 :root {
-  /* Colors */
-  --color-primary: #4f46e5;
-  --color-primary-hover: #4338ca;
-  --color-primary-light: #1f2937;
+  /* Colors - Modern Dark Theme */
+  --color-primary: #5b7aff;
+  --color-primary-hover: #4968ff;
+  --color-primary-light: #1a2847;
   --color-success: #10b981;
   --color-success-light: #064e3b;
-  --color-error: #ef4444;
+  --color-error: #ff6b6b;
   --color-error-light: #7f1d1d;
-  --color-warning: #f59e0b;
+  --color-warning: #ffa94d;
   --color-warning-light: #78350f;
-  --color-info: #3b82f6;
+  --color-info: #74c0fc;
   --color-info-light: #1e3a8a;
 
-  /* Neutrals - Mid-Dark Charcoal/Slate Theme */
-  --color-text-primary: #f3f4f6;
-  --color-text-secondary: #d1d5db;
-  --color-text-tertiary: #9ca3af;
-  --color-bg-primary: #1f2937;
-  --color-bg-secondary: #111827;
-  --color-bg-tertiary: #0f172a;
-  --color-border: #374151;
-  --color-border-light: #4b5563;
+  /* Neutrals - Harmonized Dark Theme */
+  --color-text-primary: #f0f2f5;
+  --color-text-secondary: #b4bcc7;
+  --color-text-tertiary: #7a8493;
+  --color-bg-primary: #141a23;
+  --color-bg-secondary: #0d1117;
+  --color-bg-tertiary: #1a2235;
+  --color-border: #252d3d;
+  --color-border-light: #3a4557;
 
   /* Spacing */
   --space-xs: 0.25rem;
@@ -63,10 +63,10 @@
   --line-height-relaxed: 1.75;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
 
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
@@ -97,11 +97,13 @@ body {
 a {
   color: var(--color-primary);
   text-decoration: none;
-  transition: color var(--transition-fast);
+  transition: all var(--transition-fast);
+  font-weight: 500;
 }
 
 a:hover {
-  color: var(--color-primary-hover);
+  color: #74c0fc;
+  text-decoration: underline;
 }
 
 h1, h2, h3, h4, h5, h6 {
