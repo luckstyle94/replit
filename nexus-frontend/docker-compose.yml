@@ -1,0 +1,19 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api/v1}
+    container_name: nexus-frontend
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=${VITE_API_URL:-/api/v1}
+    ports:
+      - "3001:80"
+    networks:
+      - nexus-frontend-network
+
+networks:
+  nexus-frontend-network:
+    driver: bridge
