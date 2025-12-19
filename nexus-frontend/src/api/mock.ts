@@ -47,9 +47,11 @@ export function mockLogin(
   email: string,
   password: string
 ): LoginSuccess | LoginErrorData {
+  console.log("[MOCK LOGIN]", { email, password });
   const testUser = TEST_USERS[email as keyof typeof TEST_USERS];
 
   if (!testUser) {
+    console.log("[MOCK LOGIN] Usuário não encontrado:", email);
     return {
       error: "Usuário ou senha inválidos",
       code: undefined,
@@ -57,11 +59,14 @@ export function mockLogin(
   }
 
   if (testUser.password !== password) {
+    console.log("[MOCK LOGIN] Senha incorreta para:", email);
     return {
       error: "Usuário ou senha inválidos",
       code: undefined,
     };
   }
+
+  console.log("[MOCK LOGIN] Autenticação bem-sucedida para:", email);
 
   if (testUser.mfaRequired) {
     return {

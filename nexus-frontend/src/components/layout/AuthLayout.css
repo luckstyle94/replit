@@ -36,8 +36,9 @@
 
 .auth-subtitle {
   font-size: var(--font-size-base);
-  color: var(--color-text-secondary);
+  color: var(--color-text-primary);
   line-height: var(--line-height-relaxed);
+  opacity: 0.85;
 }
 
 .auth-content {

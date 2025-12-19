@@ -37,7 +37,7 @@ export async function processMockRequest<T>(
   path: string,
   options: MockRequestOptions
 ): Promise<T> {
-  console.log("[MOCK] Intercepting:", path);
+  console.log("[MOCK] Interceptando:", path, "Body:", options.body);
 
   // Login
   if (path.includes("/auth/login") && options.method === "POST") {
