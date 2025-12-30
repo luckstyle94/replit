@@ -9,6 +9,7 @@ import { MfaSetupPage } from "./pages/MfaSetupPage";
 import { MfaChallengePage } from "./pages/MfaChallengePage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { SocialCallbackPage } from "./pages/SocialCallbackPage";
+import { SSOCallbackPage } from "./pages/SSOCallbackPage";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,8 @@ export const router = createBrowserRouter([
       { path: "mfa/setup", element: <MfaSetupPage /> },
       { path: "mfa/challenge", element: <MfaChallengePage /> },
       { path: "auth/social/:provider/callback", element: <SocialCallbackPage /> },
+      { path: "auth/sso/oidc/callback", element: <SSOCallbackPage /> },
+      { path: "auth/sso/saml/callback", element: <SSOCallbackPage /> },
     ],
   },
   {

@@ -2,6 +2,8 @@ const TOKEN_KEY = "frontend_user_v2_token";
 const MFA_MODE_KEY = "frontend_user_v2_mfa_mode";
 const SOCIAL_STATE_KEY = "frontend_user_v2_social_state";
 const SOCIAL_PROVIDER_KEY = "frontend_user_v2_social_provider";
+const SSO_TENANT_KEY = "frontend_user_v2_sso_tenant";
+const SSO_PROVIDER_KEY = "frontend_user_v2_sso_provider";
 
 // Storage de sessão: reduz exposição do token (não persiste após fechar o navegador).
 // Mantemos compatibilidade com tokens antigos no localStorage migrando uma única vez.
@@ -13,6 +15,8 @@ export const storageKeys = {
   mfaMode: MFA_MODE_KEY,
   socialState: SOCIAL_STATE_KEY,
   socialProvider: SOCIAL_PROVIDER_KEY,
+  ssoTenant: SSO_TENANT_KEY,
+  ssoProvider: SSO_PROVIDER_KEY,
 } as const;
 
 export function getToken(): string | null {
@@ -69,3 +73,23 @@ export function setSocialState(state: string | null, provider: string) {
   }
 }
 
+export function setSSOContext(tenantId: number | null, provider: string | null) {
+  if (tenantId && provider) {
+    session.setItem(SSO_TENANT_KEY, String(tenantId));
+    session.setItem(SSO_PROVIDER_KEY, provider);
+  } else {
+    session.removeItem(SSO_TENANT_KEY);
+    session.removeItem(SSO_PROVIDER_KEY);
+  }
+}
+
+export function getSSOTenantId(): number | null {
+  const value = session.getItem(SSO_TENANT_KEY);
+  if (!value) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+export function getSSOProvider(): string | null {
+  return session.getItem(SSO_PROVIDER_KEY);
+}

@@ -1,5 +1,4 @@
 import { LoginErrorData } from "./types";
-import { shouldUseMock, processMockRequest } from "./mock-interceptor";
 
 export class ApiError extends Error {
   status: number;
@@ -37,18 +36,6 @@ interface RequestOptions {
 export const UNAUTHORIZED_EVENT = "nexus:unauthorized";
 
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  // Use mock API em desenvolvimento
-  if (shouldUseMock(path)) {
-    try {
-      return await processMockRequest<T>(path, options);
-    } catch (error) {
-      if (error instanceof ApiError) {
-        throw error;
-      }
-      throw new ApiError("Erro na requisição", 500);
-    }
-  }
-
   const headers: Record<string, string> = {
     Accept: "application/json",
     ...options.headers,

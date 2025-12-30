@@ -32,6 +32,8 @@ type MfaStage =
       allowEmail: boolean;
       authenticatorPreferred: boolean;
       provider?: string;
+      ssoProvider?: "oidc" | "saml";
+      ssoTenantId?: number;
     }
   | {
       kind: "reconfigure";
@@ -61,6 +63,13 @@ interface AuthContextValue {
   completeSocialLogin: (
     params: { provider?: string; code: string; state: string }
   ) => Promise<LoginResult>;
+  completeSSOLogin: (params: {
+    tenantId: number;
+    provider: "oidc" | "saml";
+    code: string;
+    state: string;
+  }) => Promise<LoginResult>;
+  acceptSSOToken: (token: string) => Promise<void>;
   cancelMfaFlow: () => void;
   updateProfile: (payload: Partial<Pick<User, "name" | "email" | "cpf" | "phone">>) => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<void>;
@@ -108,7 +117,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const data = await request<User>("/me", { token });
       setUser(data);
-      if (!data.mfaEnabled) {
+      if (!data.mfaEnabled && mfaMode !== "email") {
         persistMfaMode("unknown");
       }
     } catch (err) {
@@ -120,7 +129,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setLoadingUser(false);
     }
-  }, [persistToken, persistMfaMode, token]);
+  }, [mfaMode, persistToken, persistMfaMode, token]);
 
   useEffect(() => {
     if (token) {
@@ -209,6 +218,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           headers: { Authorization: `Bearer ${mfaStage.token}` },
           body: { code },
         });
+        if (!resp.token) {
+          throw new Error("Token não retornado.");
+        }
+        persistToken(resp.token);
+        persistMfaMode(channel === "email" ? "email" : "authenticator");
+        setMfaStage(null);
+        setPendingLogin(null);
+        await refreshUser();
+        return { status: "authenticated" };
+      }
+      if (mfaStage && mfaStage.kind === "challenge" && mfaStage.ssoProvider && mfaStage.ssoTenantId) {
+        const resp = await request<LoginSuccess>(
+          `/auth/sso/${mfaStage.ssoProvider}/${mfaStage.ssoTenantId}/otp`,
+          {
+            method: "POST",
+            headers: { Authorization: `Bearer ${mfaStage.token}` },
+            body: { code },
+          }
+        );
         if (!resp.token) {
           throw new Error("Token não retornado.");
         }
@@ -353,6 +381,83 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [persistMfaMode, persistSocialState, persistToken, refreshUser]
   );
 
+  const completeSSOLogin = useCallback(
+    async ({
+      tenantId,
+      provider,
+      code,
+      state,
+    }: {
+      tenantId: number;
+      provider: "oidc" | "saml";
+      code: string;
+      state: string;
+    }): Promise<LoginResult> => {
+      try {
+        const resp = await request<LoginSuccess>(
+          `/auth/sso/${provider}/${tenantId}/callback?code=${encodeURIComponent(code)}&state=${encodeURIComponent(
+            state
+          )}`
+        );
+        if (!resp.token) {
+          throw new Error("Token não retornado pelo SSO.");
+        }
+        persistToken(resp.token);
+        persistMfaMode("authenticator");
+        setMfaStage(null);
+        setPendingLogin(null);
+        await refreshUser();
+        return { status: "authenticated" };
+      } catch (err) {
+        const apiErr = err as ApiError;
+        if (apiErr.code === "mfa_required" && apiErr.data) {
+          const data = apiErr.data;
+          const allowEmail = data.allowEmail !== false;
+          setMfaStage({
+            kind: "setup",
+            token: String(data.mfaToken || ""),
+            setup: {
+              secret: String(data.secret || ""),
+              otpauth: String(data.otpauth || ""),
+              issuer: typeof data.issuer === "string" ? data.issuer : undefined,
+              account: typeof data.account === "string" ? data.account : undefined,
+            },
+            allowEmail,
+          });
+          return { status: "mfa_setup" };
+        }
+        if (apiErr.code === "otp_required" && apiErr.data) {
+          const data = apiErr.data;
+          setMfaStage({
+            kind: "challenge",
+            token: String(data.mfaToken || ""),
+            allowEmail: Boolean(data.allowEmail),
+            authenticatorPreferred: data.authenticatorPreferred !== false,
+            ssoProvider: provider,
+            ssoTenantId: tenantId,
+          });
+          return { status: "mfa_challenge" };
+        }
+        throw err;
+      }
+    },
+    [persistMfaMode, persistToken, refreshUser]
+  );
+
+  const acceptSSOToken = useCallback(
+    async (jwtToken: string) => {
+      if (!jwtToken) {
+        throw new Error("Token inválido.");
+      }
+      persistToken(jwtToken);
+      persistMfaMode("authenticator");
+      setMfaStage(null);
+      setPendingLogin(null);
+      await refreshUser();
+    },
+    [persistMfaMode, persistToken, refreshUser]
+  );
+
   const startAuthenticatorSetup = useCallback(async () => {
     if (!token) {
       throw new Error("Usuário não autenticado.");
@@ -436,6 +541,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       startAuthenticatorSetup,
       startSocialLogin,
       completeSocialLogin,
+      completeSSOLogin,
+      acceptSSOToken,
       cancelMfaFlow,
       updateProfile,
       changePassword,
@@ -456,6 +563,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       startAuthenticatorSetup,
       startSocialLogin,
       completeSocialLogin,
+      completeSSOLogin,
+      acceptSSOToken,
       cancelMfaFlow,
       updateProfile,
       changePassword,

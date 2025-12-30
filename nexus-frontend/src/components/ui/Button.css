@@ -80,13 +80,13 @@
 }
 
 .btn-danger {
-  background-color: var(--color-error);
-  color: white;
+  background: linear-gradient(135deg, #ff8f8c 0%, #ff5f5c 100%) !important;
+  color: #2b0f0f !important;
   box-shadow: var(--shadow-sm);
 }
 
 .btn-danger:hover:not(:disabled) {
-  background-color: #dc2626;
+  background: linear-gradient(135deg, #ffb3b1 0%, #ff7a77 100%) !important;
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
