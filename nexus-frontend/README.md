@@ -10,6 +10,7 @@ The **Nexus Frontend** app is the end-user web UI for the Nexus platform. It int
 - Provide the end-user experience (login, MFA, profile, and user-facing screens).
 - Call `nexus-api` using `VITE_API_URL` as the base URL.
 - Serve static assets via Nginx when running in Docker.
+- Allow users to view and revoke their own active sessions via the API.
 
 ## Requirements
 - Node.js + npm (for local development), or Docker (recommended).
@@ -40,6 +41,10 @@ VITE_API_URL=http://localhost:8080/api/v1 npm run dev
   - Authenticator setup (first-time), or
   - Authenticator OTP challenge (already enabled users).
 - When temporarily allowed by the API during first-time access, an email option may be available. After enabling the authenticator, the email option stops appearing.
+
+## Session Management (user)
+- The dashboard includes an active sessions list powered by `GET /sessions`.
+- Users can revoke any of their sessions via `DELETE /sessions/{id}` (including the current session).
 
 ## Troubleshooting (dev reference)
 - **Request ID**: the API may return `X-Request-ID` in responses. When investigating errors, check this header in DevTools (Network).

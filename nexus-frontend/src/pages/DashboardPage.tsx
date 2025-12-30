@@ -1,17 +1,18 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../state/auth";
 import { TenantsPanel } from "../components/tenants/TenantsPanel";
 import { maskCpf } from "../utils/format";
-import { ApiError } from "../api/http";
+import { ApiError, request } from "../api/http";
 import { Alert } from "../components/ui/Alert";
 import { Button } from "../components/ui/Button";
 import { Card } from "../components/ui/Card";
 import { Input } from "../components/ui/Input";
 import { useToast } from "../components/ui/toast";
+import { SessionInfo, SessionsResponse } from "../api/types";
 
 export function DashboardPage() {
-  const { user, updateProfile, changePassword, mfaMode, startAuthenticatorSetup, mfaStage } =
+  const { user, updateProfile, changePassword, mfaMode, startAuthenticatorSetup, mfaStage, token, logout } =
     useAuth();
   const navigate = useNavigate();
   const toast = useToast();
@@ -24,8 +25,12 @@ export function DashboardPage() {
   const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
+  const [sessions, setSessions] = useState<SessionInfo[]>([]);
+  const [loadingSessions, setLoadingSessions] = useState(false);
+  const [sessionMessage, setSessionMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -35,6 +40,27 @@ export function DashboardPage() {
       setPhone(user.phone || "");
     }
   }, [user]);
+
+  const loadSessions = useCallback(async () => {
+    if (!token) return;
+    setLoadingSessions(true);
+    setSessionMessage(null);
+    try {
+      const response = await request<SessionsResponse>("/sessions", { token });
+      setSessions(response.data || []);
+    } catch (err) {
+      const apiErr = err as ApiError;
+      setSessionMessage(apiErr.message || "Erro ao carregar sessões.");
+    } finally {
+      setLoadingSessions(false);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      loadSessions();
+    }
+  }, [loadSessions, token]);
 
   if (!user) {
     return (
@@ -67,6 +93,14 @@ export function DashboardPage() {
   const handlePasswordSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setPasswordMessage(null);
+    if (newPassword.length < 12) {
+      setPasswordMessage("Use pelo menos 12 caracteres.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage("As senhas não conferem.");
+      return;
+    }
     setSavingPassword(true);
     try {
       await changePassword(currentPassword, newPassword);
@@ -74,9 +108,14 @@ export function DashboardPage() {
       toast.success("Senha atualizada.");
       setCurrentPassword("");
       setNewPassword("");
+      setConfirmPassword("");
     } catch (err) {
       const apiErr = err as ApiError;
-      setPasswordMessage(apiErr.message || "Erro ao alterar senha.");
+      if ((apiErr.message || "").toLowerCase().includes("últimas 5 senhas")) {
+        setPasswordMessage("Escolha uma senha diferente das últimas 5 usadas.");
+      } else {
+        setPasswordMessage(apiErr.message || "Erro ao alterar senha.");
+      }
     } finally {
       setSavingPassword(false);
     }
@@ -93,13 +132,48 @@ export function DashboardPage() {
     }
   };
 
-  const mfaBadge = user.mfaEnabled
+  const handleRevokeSession = async (sessionId: string, isCurrent: boolean) => {
+    if (!token) {
+      toast.error("Sessão inválida. Faça login novamente.");
+      return;
+    }
+    const confirmation = isCurrent
+      ? "Essa é sua sessão atual. Encerrar agora vai exigir novo login. Deseja continuar?"
+      : "Deseja encerrar esta sessão?";
+    if (!confirm(confirmation)) return;
+    try {
+      await request(`/sessions/${sessionId}`, { method: "DELETE", token });
+      toast.success("Sessão encerrada.");
+      if (isCurrent) {
+        await logout();
+        return;
+      }
+      loadSessions();
+    } catch (err) {
+      const apiErr = err as ApiError;
+      toast.error(apiErr.message || "Erro ao encerrar sessão.");
+    }
+  };
+
+  const formatDate = (value?: string) => {
+    if (!value) return "—";
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return "—";
+    return parsed.toLocaleString();
+  };
+
+  const isMfaDelegated = user.mfaManagement?.mode === "delegated";
+  const mfaBadge = isMfaDelegated
+    ? { text: "MFA gerenciado", className: "badge info" }
+    : user.mfaEnabled
     ? { text: "MFA ativo", className: "badge success" }
     : { text: "MFA pendente", className: "badge danger" };
-  const channelLabel = user.mfaEnabled
+  const channelLabel = isMfaDelegated
+    ? "SSO"
+    : user.mfaEnabled
     ? "Autenticador"
     : mfaMode === "email"
-    ? "E-mail (temporário)"
+    ? "E-mail"
     : mfaMode === "authenticator"
     ? "Autenticador"
     : "Indefinido";
@@ -171,6 +245,15 @@ export function DashboardPage() {
               required
               hint="Use pelo menos 12 caracteres."
             />
+            <Input
+              label="Confirmar senha"
+              type="password"
+              autoComplete="new-password"
+              minLength={12}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
             <Button type="submit" loading={savingPassword}>
               Atualizar senha
             </Button>
@@ -182,7 +265,9 @@ export function DashboardPage() {
               <span className={mfaBadge.className}>{mfaBadge.text}</span>
               <span className="pill">Método atual: {channelLabel}</span>
             </div>
-            {mfaMode === "email" ? (
+            {isMfaDelegated ? (
+              <p className="muted small">{user.mfaManagement?.message || "MFA gerenciado pela sua organização."}</p>
+            ) : mfaMode === "email" ? (
               <p className="muted small">
                 Você confirmou por e-mail neste login. Esse método pode ficar disponível apenas
                 durante o primeiro acesso.
@@ -202,6 +287,56 @@ export function DashboardPage() {
           </div>
         </Card>
       </div>
+
+      <Card
+        title="Sessões ativas"
+        right={
+          <Button variant="secondary" type="button" onClick={loadSessions} loading={loadingSessions}>
+            Atualizar
+          </Button>
+        }
+      >
+        {sessionMessage && <Alert variant="info">{sessionMessage}</Alert>}
+        {sessions.length === 0 ? (
+          <div className="muted">Nenhuma sessão ativa encontrada.</div>
+        ) : (
+          <div className="session-list">
+            {sessions.map((session) => {
+              const isCurrent = session.status === "current";
+              const statusLabel = isCurrent ? "Sessão atual" : "Ativa";
+              const statusClass = isCurrent ? "badge success" : "badge info";
+              return (
+                <div className="session-row" key={session.id}>
+                  <div className="session-cell">
+                    <div className="session-title">
+                      {session.userAgent || "Dispositivo não identificado"}
+                    </div>
+                    <div className="muted small">IP: {session.ip || "Não informado"}</div>
+                  </div>
+                  <div className="session-cell">
+                    <div className="session-label">Início</div>
+                    <div>{formatDate(session.createdAt)}</div>
+                  </div>
+                  <div className="session-cell">
+                    <div className="session-label">Última atividade</div>
+                    <div>{formatDate(session.lastActivity)}</div>
+                  </div>
+                  <div className="session-cell session-actions">
+                    <span className={statusClass}>{statusLabel}</span>
+                    <Button
+                      variant={isCurrent ? "secondary" : "danger"}
+                      type="button"
+                      onClick={() => handleRevokeSession(session.id, isCurrent)}
+                    >
+                      Encerrar
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Card>
 
       <TenantsPanel />
     </div>

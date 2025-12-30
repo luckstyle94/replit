@@ -203,6 +203,12 @@ label {
   color: #ffd0d0;
 }
 
+.badge.info {
+  background: rgba(123, 158, 255, 0.12);
+  border-color: rgba(123, 158, 255, 0.35);
+  color: #c7d2fe;
+}
+
 .alert {
   border-radius: 12px;
   padding: 12px 14px;
@@ -417,6 +423,11 @@ label {
   border: 1px solid var(--border);
 }
 
+.wrap-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .divider {
   display: flex;
   align-items: center;
@@ -479,10 +490,59 @@ label {
   background: rgba(255, 255, 255, 0.02);
 }
 
+.qr-image {
+  width: 160px;
+  height: 160px;
+  display: block;
+}
+
+.qr-only-desktop {
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .qr-only-desktop {
+    display: none;
+  }
+}
+
 .pill-row {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+}
+
+.session-list {
+  display: grid;
+  gap: 12px;
+}
+
+.session-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) minmax(140px, 0.8fr) minmax(160px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.session-title {
+  font-weight: 600;
+}
+
+.session-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+
+.session-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
 }
 
 .spacer-16 {
@@ -527,5 +587,15 @@ label {
 
   .hero {
     padding: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  .session-row {
+    grid-template-columns: 1fr;
+  }
+
+  .session-actions {
+    align-items: flex-start;
   }
 }

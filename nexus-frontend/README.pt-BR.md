@@ -10,6 +10,7 @@ O **Nexus Frontend** é a interface web para usuários finais da plataforma Nexu
 - Fornecer a experiência do usuário final (login, MFA, perfil e telas de uso).
 - Consumir a `nexus-api` usando `VITE_API_URL` como URL base.
 - Servir arquivos estáticos via Nginx quando executado em Docker.
+- Permitir que o usuário liste e encerre suas próprias sessões ativas via API.
 
 ## Requisitos
 - Node.js + npm (para desenvolvimento local) ou Docker (recomendado).
@@ -40,6 +41,10 @@ VITE_API_URL=http://localhost:8080/api/v1 npm run dev
   - Configuração do autenticador (primeiro acesso), ou
   - Confirmação de código no autenticador (usuário já habilitado).
 - Quando permitido pela API durante o primeiro acesso, pode existir opção temporária por e-mail. Depois de habilitar o autenticador, essa opção deixa de aparecer.
+
+## Gerenciamento de Sessões (usuário)
+- O dashboard exibe sessões ativas com base em `GET /sessions`.
+- O usuário pode revogar qualquer sessão via `DELETE /sessions/{id}` (inclusive a sessão atual).
 
 ## Troubleshooting (referência de desenvolvimento)
 - **Request ID**: a API pode retornar `X-Request-ID` nas respostas. Em caso de erro, verifique esse header no DevTools (Network) para facilitar investigação.

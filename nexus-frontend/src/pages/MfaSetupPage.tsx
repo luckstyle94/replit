@@ -20,6 +20,7 @@ export function MfaSetupPage() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [sendingEmail, setSendingEmail] = useState(false);
+  const [qrSrc, setQrSrc] = useState<string | null>(null);
 
   const setup = mfaStage && mfaStage.kind !== "challenge" ? mfaStage.setup : null;
   const allowEmail = Boolean(mfaStage && mfaStage.kind !== "challenge" && mfaStage.allowEmail);
@@ -29,6 +30,36 @@ export function MfaSetupPage() {
       navigate("/", { replace: true });
     }
   }, [mfaStage, navigate]);
+
+  useEffect(() => {
+    let active = true;
+    const generateQr = async () => {
+      if (!setup?.otpauth) {
+        setQrSrc(null);
+        return;
+      }
+      try {
+        const { toDataURL } = await import("qrcode");
+        const url = await toDataURL(setup.otpauth, {
+          margin: 1,
+          width: 160,
+          color: { dark: "#e2e8f0", light: "#0f1422" },
+        });
+        if (active) {
+          setQrSrc(url);
+        }
+      } catch {
+        if (active) {
+          setQrSrc(null);
+        }
+      }
+    };
+
+    generateQr();
+    return () => {
+      active = false;
+    };
+  }, [setup?.otpauth]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -93,7 +124,7 @@ export function MfaSetupPage() {
         <div className="stack">
           <div className="form-group">
             <label>Chave de configuração</label>
-            <div className="surface">{setup.secret}</div>
+            <div className="surface wrap-anywhere">{setup.secret}</div>
             <div className="pill-row">
               <Button
                 variant="secondary"
@@ -125,6 +156,11 @@ export function MfaSetupPage() {
                 </>
               )}
             </div>
+            {qrSrc && (
+              <div className="qr-only-desktop qr-box" aria-hidden="true">
+                <img className="qr-image" src={qrSrc} alt="QR code do autenticador" />
+              </div>
+            )}
           </div>
           <div className="pill-row">
             {setup.issuer && <span className="pill">Emissor: {setup.issuer}</span>}
@@ -174,7 +210,7 @@ export function MfaSetupPage() {
             error={codeError}
           />
           <Button type="submit" loading={loading}>
-            Ativar autenticador
+            Autenticar
           </Button>
           <div className="pill-row">
             {allowEmail && (
