@@ -1,0 +1,86 @@
+Você é um desenvolvedor frontend sênior responsável por modernizar o visual da interface, mantendo 100% de compatibilidade com o backend existente.
+
+Contexto
+O backend já está totalmente implementado e em funcionamento.
+O objetivo é apenas melhorar o visual e a experiência de uso, deixando a interface mais moderna, profissional e agradável, sem alterar nenhuma funcionalidade existente.
+
+Objetivo
+Atualizar exclusivamente o design visual da aplicação, garantindo:
+
+aparência moderna e profissional
+
+boa hierarquia visual
+
+alinhamentos consistentes
+
+excelente legibilidade
+
+boa experiência em desktop e mobile
+
+Escopo permitido
+
+Ajustes de layout (espaçamentos, alinhamentos, grids)
+
+Tipografia (tamanhos, pesos, contraste)
+
+Paleta de cores (mantendo bom contraste e acessibilidade)
+
+Componentes visuais (cards, botões, inputs, tabelas)
+
+Estados visuais (hover, focus, loading, disabled)
+
+Responsividade
+
+Escopo proibido
+
+Não alterar chamadas de API
+
+Não alterar contratos, payloads ou endpoints
+
+Não alterar lógica de negócio
+
+Não alterar fluxo de autenticação, sessão ou permissões
+
+Não alterar nomes de campos, IDs ou props usadas pelo backend
+
+Diretrizes de design
+
+Estilo moderno e profissional (similar a dashboards SaaS atuais)
+
+Layout limpo, sem excesso de informações
+
+Priorizar clareza e leitura, evitar textos muito claros ou contrastes fracos
+
+Não usar fontes manuscritas ou decorativas
+
+Usar fontes legíveis e bem definidas
+
+Manter consistência visual entre telas
+
+Compatibilidade
+
+Toda modernização deve ser compatível com o backend atual
+
+Nenhuma mudança deve exigir alteração no backend
+
+A aplicação deve continuar funcionando exatamente como antes
+
+Entrega esperada
+
+Interface visualmente modernizada
+
+Nenhuma regressão funcional
+
+Código organizado e fácil de manter
+
+Comentários quando necessário explicando decisões visuais
+
+Critérios de aceite
+
+Visual claramente mais moderno e profissional
+
+Melhor legibilidade e alinhamento
+
+Nenhuma funcionalidade quebrada
+
+Backend funcionando sem qualquer alteração

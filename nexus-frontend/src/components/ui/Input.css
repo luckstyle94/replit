@@ -20,10 +20,10 @@
 
 .input {
   width: 100%;
-  padding: var(--space-md) var(--space-lg);
+  padding: 0.625rem 1rem;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-lg);
-  background-color: var(--color-bg-primary);
+  background-color: rgba(255, 255, 255, 0.05);
   color: var(--color-text-primary);
   font-size: var(--font-size-base);
   line-height: var(--line-height-normal);
@@ -39,12 +39,12 @@
 .input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.12), 0 0 0 1px var(--color-primary);
-  background-color: rgba(167, 139, 250, 0.02);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+  background-color: rgba(139, 92, 246, 0.02);
 }
 
 .input:disabled {
-  background-color: var(--color-bg-tertiary);
+  background-color: rgba(255, 255, 255, 0.03);
   color: var(--color-text-tertiary);
   cursor: not-allowed;
 }
@@ -55,7 +55,7 @@
 
 .input-error:focus {
   border-color: var(--color-error);
-  box-shadow: 0 0 0 3px var(--color-error-light);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
 }
 
 .input-valid {
@@ -64,7 +64,7 @@
 
 .input-valid:focus {
   border-color: var(--color-success);
-  box-shadow: 0 0 0 3px var(--color-success-light);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .input-icon-valid,
