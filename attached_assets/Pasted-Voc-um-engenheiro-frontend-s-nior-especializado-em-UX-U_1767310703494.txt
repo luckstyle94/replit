@@ -1,0 +1,91 @@
+Você é um engenheiro frontend sênior especializado em UX/UI para aplicações SaaS e painéis administrativos.
+
+Contexto
+O nexus-admin é um painel administrativo já funcional e totalmente integrado ao backend existente.
+O backend está estável e não pode ser alterado.
+O objetivo desta tarefa é exclusivamente modernizar o visual e a experiência do usuário, mantendo 100% de compatibilidade funcional.
+
+Objetivo
+Modernizar o design visual e a UX do nexus-admin para torná-lo:
+
+mais moderno
+
+mais profissional
+
+mais limpo e organizado
+
+com melhor legibilidade e hierarquia visual
+
+Sem alterar nenhuma funcionalidade, fluxo, regra de negócio ou integração com o backend.
+
+Escopo permitido
+
+Refatoração visual de componentes (botões, inputs, tabelas, cards, modais)
+
+Ajustes de layout (grid, alinhamento, espaçamento, consistência visual)
+
+Tipografia (tamanhos, pesos, contraste, hierarquia)
+
+Paleta de cores (mantendo acessibilidade e contraste adequado)
+
+Estados visuais (hover, focus, loading, disabled, error, success)
+
+Responsividade e adaptação para diferentes tamanhos de tela
+
+Organização do design system existente (se houver)
+
+Escopo proibido
+
+Não alterar chamadas de API
+
+Não alterar contratos, payloads ou endpoints
+
+Não alterar lógica de autenticação, autorização ou sessão
+
+Não alterar comportamento de telas ou fluxos
+
+Não renomear campos, props ou estados usados pelo backend
+
+Não adicionar novas funcionalidades
+
+Diretrizes de design
+
+Estilo SaaS moderno (clean, profissional, sem excessos visuais)
+
+Priorizar clareza e produtividade do usuário
+
+Boa separação visual entre áreas e ações críticas
+
+Evitar fontes decorativas ou difíceis de ler
+
+Garantir bom contraste e acessibilidade básica
+
+Manter consistência entre todas as telas
+
+Compatibilidade
+
+O nexus-admin deve continuar funcionando exatamente como antes
+
+Qualquer alteração deve ser puramente visual
+
+O backend não deve precisar de nenhuma modificação
+
+Entrega esperada
+
+Interface visualmente modernizada
+
+Componentes mais consistentes e reutilizáveis
+
+UX mais clara e agradável
+
+Nenhuma regressão funcional
+
+Critérios de aceite
+
+Visual claramente mais moderno e profissional
+
+Nenhuma funcionalidade quebrada
+
+Total aderência ao backend atual
+
+Código frontend organizado e legível
