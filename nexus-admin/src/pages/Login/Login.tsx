@@ -94,50 +94,108 @@ export function Login() {
   }
 
   return (
-    <div className="login-container" style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "#f4f4f9" }}>
-      <form className="card stack" onSubmit={handleSubmit} style={{ width: "100%", maxWidth: "400px", padding: "2rem" }}>
-        <h2 style={{ textAlign: "center", color: "#1a1a2e" }}>Nexus Admin</h2>
+    <div className="login-container" style={{ 
+      display: "flex", 
+      justifyContent: "center", 
+      alignItems: "center", 
+      height: "100vh", 
+      backgroundColor: "var(--background)",
+      background: "radial-gradient(circle at 50% 50%, #f1f5f9 0%, #f8fafc 100%)"
+    }}>
+      <form className="card stack" onSubmit={handleSubmit} style={{ 
+        width: "100%", 
+        maxWidth: "420px", 
+        padding: "2.5rem",
+        boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)"
+      }}>
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <h2 style={{ fontSize: "1.75rem", fontWeight: "800", color: "var(--primary)", letterSpacing: "-0.05em", margin: 0 }}>Nexus</h2>
+          <p className="muted">Acesse o painel administrativo</p>
+        </div>
+        
         <label>
           Email
-          <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
+          <input 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            type="email" 
+            placeholder="admin@nexus.com"
+            required 
+          />
         </label>
+        
         <label>
           Senha
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" required />
+          <input 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            type="password" 
+            placeholder="••••••••••••"
+            required 
+          />
         </label>
-        <button type="submit" disabled={loading} style={{ marginTop: "1rem" }}>
-          {loading ? "Entrando..." : "Entrar"}
+        
+        <button type="submit" disabled={loading} style={{ marginTop: "1rem", height: "48px" }}>
+          {loading ? "Entrando..." : "Entrar na plataforma"}
         </button>
-        {error && <p className="error" style={{ textAlign: "center" }}>{error}</p>}
+        
+        {error && (
+          <div style={{ 
+            marginTop: "1rem", 
+            padding: "0.75rem", 
+            backgroundColor: "#fef2f2", 
+            border: "1px solid #fee2e2", 
+            borderRadius: "8px",
+            color: "#ef4444",
+            fontSize: "0.875rem",
+            textAlign: "center"
+          }}>
+            {error}
+          </div>
+        )}
+        
         {otpStep && (
-          <div className="card" style={{ marginTop: "1rem", padding: "1rem", background: "#f7f7fb" }}>
-            <h4>Informe o código do autenticador</h4>
+          <div className="card" style={{ marginTop: "1.5rem", padding: "1.25rem", background: "#f8fafc", border: "1px solid var(--border)" }}>
+            <h4 style={{ margin: "0 0 0.5rem 0", fontSize: "0.875rem" }}>Informe o código do autenticador</h4>
             <label>
               Código MFA
               <input value={otp} onChange={(e) => setOtp(e.target.value)} type="text" placeholder="123456" />
             </label>
-            <small>Este código vem do Google Authenticator ou app similar.</small>
+            <p className="muted" style={{ fontSize: "0.75rem", marginTop: "0.5rem" }}>Confira seu aplicativo de autenticação (Google, Authy, etc).</p>
           </div>
         )}
+        
         {mfaData && (
-          <div className="card" style={{ marginTop: "1rem", padding: "1rem", background: "#f7f7fb" }}>
-            <h4>Configure seu MFA</h4>
-            <p>Escaneie o QR Code no Google Authenticator ou app similar, ou use a chave manual.</p>
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+          <div className="card" style={{ marginTop: "1.5rem", padding: "1.25rem", background: "#f8fafc", border: "1px solid var(--border)" }}>
+            <h4 style={{ margin: "0 0 0.5rem 0", fontSize: "0.875rem" }}>Configure seu MFA</h4>
+            <p className="muted" style={{ fontSize: "0.75rem", marginBottom: "1rem" }}>Escaneie o QR Code abaixo para ativar a segurança em duas etapas.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", alignItems: "center" }}>
               <img
                 alt="QR MFA"
+                style={{ borderRadius: "8px", border: "4px solid #fff", boxShadow: "var(--shadow)" }}
                 src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(mfaData.otpauth)}&size=150x150`}
               />
-              <div>
-                <div style={{ fontFamily: "monospace" }}>Chave: {mfaData.secret}</div>
+              <div style={{ width: "100%" }}>
+                <p className="muted" style={{ fontSize: "0.7rem", marginBottom: "0.25rem" }}>Chave manual:</p>
+                <div style={{ 
+                  fontFamily: "monospace", 
+                  fontSize: "0.75rem", 
+                  padding: "0.5rem", 
+                  background: "#fff", 
+                  border: "1px solid var(--border)", 
+                  borderRadius: "4px",
+                  wordBreak: "break-all"
+                }}>
+                  {mfaData.secret}
+                </div>
               </div>
             </div>
-            <form onSubmit={handleConfirmMFA} className="stack" style={{ marginTop: "0.5rem" }}>
+            <form onSubmit={handleConfirmMFA} className="stack" style={{ marginTop: "1rem" }}>
               <label>
                 Código de 6 dígitos
-                <input value={mfaCode} onChange={(e) => setMfaCode(e.target.value)} required />
+                <input value={mfaCode} onChange={(e) => setMfaCode(e.target.value)} required placeholder="000000" />
               </label>
-              <button type="submit" disabled={loading}>
+              <button type="submit" disabled={loading} style={{ height: "40px" }}>
                 Confirmar MFA
               </button>
             </form>

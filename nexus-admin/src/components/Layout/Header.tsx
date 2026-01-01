@@ -5,9 +5,15 @@ export function Header() {
 
   return (
     <header className="header">
-      <h3>Painel Administrativo</h3>
+      <div className="header-title">
+        <h3>Painel Administrativo</h3>
+        <p className="muted">Gerenciamento de plataforma Nexus</p>
+      </div>
       <div className="header-user">
-        <span>Olá, <strong>{user?.name}</strong></span>
+        <div className="user-info">
+          <span className="user-label">Olá,</span>
+          <strong>{user?.name}</strong>
+        </div>
         <button onClick={logout} className="btn-logout">Sair</button>
       </div>
     </header>

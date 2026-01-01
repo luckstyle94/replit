@@ -26,21 +26,32 @@ export function Dashboard() {
   }, []);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <p>Bem-vindo ao Painel Administrativo.</p>
-      <div className="grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginTop: '20px' }}>
+    <div className="shell">
+      <div className="header">
+        <div className="header-title">
+          <h1>Dashboard</h1>
+          <p className="muted">Bem-vindo ao Painel Administrativo Nexus.</p>
+        </div>
+      </div>
+      
+      <div className="grid">
         <div className="card">
-          <h3>Empresas Ativas</h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#e94560' }}>{stats.active_tenants}</p>
+          <p className="muted">Empresas Ativas</p>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+            {stats.active_tenants}
+          </div>
         </div>
         <div className="card">
-          <h3>Usuários Totais</h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#e94560' }}>{stats.total_users}</p>
+          <p className="muted">Usuários Totais</p>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+            {stats.total_users}
+          </div>
         </div>
         <div className="card">
-          <h3>Features Ativas</h3>
-          <p style={{ fontSize: '2rem', fontWeight: 'bold', color: '#e94560' }}>{stats.active_features}</p>
+          <p className="muted">Features Ativas</p>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+            {stats.active_features}
+          </div>
         </div>
       </div>
     </div>
