@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import { isAxiosError } from "axios";
 import api from "../../services/api";
 
+interface DashboardStats {
+  active_tenants: number;
+  total_users: number;
+  active_features: number;
+}
+
 export function Dashboard() {
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<DashboardStats>({
     active_tenants: 0,
     total_users: 0,
     active_features: 0,
@@ -37,19 +43,19 @@ export function Dashboard() {
       <div className="grid">
         <div className="card">
           <p className="muted">Empresas Ativas</p>
-          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letterSpacing: '-0.05em' }}>
             {stats.active_tenants}
           </div>
         </div>
         <div className="card">
           <p className="muted">Usuários Totais</p>
-          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letterSpacing: '-0.05em' }}>
             {stats.total_users}
           </div>
         </div>
         <div className="card">
           <p className="muted">Features Ativas</p>
-          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letter-spacing: '-0.05em' }}>
+          <div style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--accent)', marginTop: '0.5rem', letterSpacing: '-0.05em' }}>
             {stats.active_features}
           </div>
         </div>

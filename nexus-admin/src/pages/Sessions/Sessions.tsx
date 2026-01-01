@@ -88,55 +88,89 @@ export function Sessions() {
   };
 
   return (
-    <div className="shell stack">
+    <div className="shell">
       <div className="header">
-        <div>
-          <h1>Sessões</h1>
-          <p className="muted">Visualize e encerre sessões ativas globalmente.</p>
+        <div className="header-title">
+          <h1>Sessões Ativas</h1>
+          <p className="muted">Monitore e gerencie acessos em tempo real.</p>
         </div>
-        <div className="actions">
-          <button className="secondary" onClick={() => loadSessions(true)} disabled={loading}>
-            Atualizar
-          </button>
-        </div>
+        <button className="secondary" onClick={() => loadSessions(true)} disabled={loading}>
+          🔄 Atualizar Lista
+        </button>
       </div>
 
-      {message && <div className="info">{message}</div>}
+      {message && (
+        <div className="info" style={{ marginBottom: '1.5rem' }}>
+          {message}
+        </div>
+      )}
 
-      <div className="card">
+      <div className="stack">
         {loading ? (
-          <p className="muted">Carregando sessões...</p>
+          <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+            <p className="muted">Carregando sessões...</p>
+          </div>
         ) : sessions.length === 0 ? (
-          <p className="muted">Nenhuma sessão ativa encontrada.</p>
+          <div className="card" style={{ textAlign: 'center', padding: '3rem' }}>
+            <p className="muted">Nenhuma sessão ativa encontrada.</p>
+          </div>
         ) : (
-          <ul className="list">
+          <div className="grid">
             {sessions.map((session) => (
-              <li key={session.id}>
-                <div>
-                  <strong>{session.userName || session.userEmail || "Usuário"}</strong>
-                  <div className="muted">ID do usuário: {session.userId ?? "—"}</div>
-                  <div className="muted">E-mail: {session.userEmail || "Não informado"}</div>
-                  <div className="muted">Dispositivo: {truncate(session.userAgent)}</div>
-                  <div className="muted">IP aproximado: {session.ip || "Não informado"}</div>
-                  <div className="muted">Início: {formatDate(session.createdAt)}</div>
-                  <div className="muted">Última atividade: {formatDate(session.lastActivity)}</div>
+              <div key={session.id} className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <h3 style={{ margin: 0, fontSize: '1rem' }}>{session.userName || session.userEmail || "Usuário Desconhecido"}</h3>
+                    <p className="muted" style={{ fontSize: '0.75rem' }}>{session.userEmail}</p>
+                  </div>
+                  <span style={{ 
+                    padding: '0.2rem 0.4rem', 
+                    borderRadius: '4px', 
+                    fontSize: '0.625rem',
+                    backgroundColor: '#eff6ff',
+                    color: '#3b82f6',
+                    fontWeight: '700'
+                  }}>
+                    ID: {session.userId ?? "—"}
+                  </span>
                 </div>
-                <div className="actions">
-                  <button className="secondary" onClick={() => handleRevokeSession(session)}>
-                    Encerrar sessão
+
+                <div style={{ fontSize: '0.8125rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <span className="muted" style={{ minWidth: '80px' }}>Dispositivo:</span>
+                    <span style={{ wordBreak: 'break-all' }}>{truncate(session.userAgent, 60)}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <span className="muted" style={{ minWidth: '80px' }}>Endereço IP:</span>
+                    <span>{session.ip || "Não informado"}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <span className="muted" style={{ minWidth: '80px' }}>Iniciado em:</span>
+                    <span>{formatDate(session.createdAt)}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <span className="muted" style={{ minWidth: '80px' }}>Atividade:</span>
+                    <span style={{ color: 'var(--accent)', fontWeight: '500' }}>{formatDate(session.lastActivity)}</span>
+                  </div>
+                </div>
+
+                <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--border)', display: 'grid', gridTemplateColumns: '1fr', gap: '0.5rem' }}>
+                  <button className="secondary small" onClick={() => handleRevokeSession(session)} style={{ fontSize: '0.75rem' }}>
+                    Encerrar Esta Sessão
                   </button>
-                  <button className="danger" onClick={() => handleRevokeUserSessions(session)}>
-                    Encerrar todas do usuário
+                  <button className="secondary small" onClick={() => handleRevokeUserSessions(session)} style={{ fontSize: '0.75rem', color: '#ef4444', borderColor: '#fecaca' }}>
+                    Revogar Todos os Acessos do Usuário
                   </button>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
+        
         {nextCursor && (
-          <div className="actions">
-            <button onClick={() => loadSessions(false)} disabled={loadingMore}>
-              {loadingMore ? "Carregando..." : "Carregar mais"}
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.5rem' }}>
+            <button onClick={() => loadSessions(false)} disabled={loadingMore} style={{ width: '200px' }}>
+              {loadingMore ? "Carregando..." : "Ver Mais Sessões"}
             </button>
           </div>
         )}

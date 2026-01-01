@@ -224,17 +224,35 @@ export function SSOSettings() {
   if (loading) return <p>Carregando...</p>;
 
   return (
-    <div>
-      <h1>SSO por Tenant</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="shell">
+      <div className="header">
+        <div className="header-title">
+          <h1>Configurações de SSO</h1>
+          <p className="muted">Configure Single Sign-On via OIDC ou SAML para seus tenants.</p>
+        </div>
+      </div>
 
-      <div style={{ marginBottom: "20px" }}>
+      {error && (
+        <div className="error" style={{ 
+          marginBottom: '1.5rem', 
+          padding: '1rem', 
+          backgroundColor: '#fef2f2', 
+          border: '1px solid #fee2e2', 
+          borderRadius: '8px',
+          color: '#ef4444'
+        }}>
+          {error}
+        </div>
+      )}
+
+      <div className="card" style={{ marginBottom: "2rem" }}>
         <label>
-          Tenant
+          Selecione a Empresa
           <select
+            className="secondary"
             value={selectedTenantId ?? ""}
             onChange={(e) => setSelectedTenantId(Number(e.target.value))}
-            style={{ marginLeft: "10px" }}
+            style={{ marginTop: "0.5rem", height: '42px' }}
           >
             {tenants.map((tenant) => (
               <option key={tenant.id} value={tenant.id}>
@@ -245,105 +263,148 @@ export function SSOSettings() {
         </label>
       </div>
 
-      <form className="card stack" onSubmit={handleSubmit}>
-        <h3>{tenantName || "Configuração"}</h3>
+      <form className="stack" onSubmit={handleSubmit}>
+        <div className="card stack">
+          <h3 style={{ marginBottom: '1rem' }}>{tenantName || "Configuração"}</h3>
 
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.enabled}
-            onChange={(e) => setSettings({ ...settings, enabled: e.target.checked })}
-          />
-          SSO habilitado
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={settings.required}
-            onChange={(e) => setSettings({ ...settings, required: e.target.checked })}
-          />
-          SSO obrigatório (bloqueia login local)
-        </label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+            <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.75rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={settings.enabled}
+                onChange={(e) => setSettings({ ...settings, enabled: e.target.checked })}
+                style={{ width: '18px', height: '18px' }}
+              />
+              <div>
+                <span style={{ display: 'block', fontSize: '0.875rem' }}>SSO Habilitado</span>
+                <span className="muted" style={{ fontSize: '0.75rem' }}>Permite login via provedor externo.</span>
+              </div>
+            </label>
+            <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.75rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={settings.required}
+                onChange={(e) => setSettings({ ...settings, required: e.target.checked })}
+                style={{ width: '18px', height: '18px' }}
+              />
+              <div>
+                <span style={{ display: 'block', fontSize: '0.875rem' }}>SSO Obrigatório</span>
+                <span className="muted" style={{ fontSize: '0.75rem' }}>Bloqueia autenticação local por senha.</span>
+              </div>
+            </label>
+          </div>
 
-        <label>
-          Tipo de provedor
-          <select
-            value={settings.providerType || "oidc"}
-            onChange={(e) => setSettings({ ...settings, providerType: e.target.value as "oidc" | "saml" })}
-          >
-            <option value="oidc">OIDC</option>
-            <option value="saml">SAML 2.0</option>
-          </select>
-        </label>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '1rem' }}>
+            <label>
+              Tipo de Provedor
+              <select
+                className="secondary"
+                value={settings.providerType || "oidc"}
+                onChange={(e) => setSettings({ ...settings, providerType: e.target.value as "oidc" | "saml" })}
+                style={{ height: '42px' }}
+              >
+                <option value="oidc">OpenID Connect (OIDC)</option>
+                <option value="saml">SAML 2.0</option>
+              </select>
+            </label>
+            <label>
+              Domínios de Email
+              <input
+                value={(settings.emailDomains || []).join(", ")}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    emailDomains: e.target.value.split(",").map((d) => d.trim()).filter(Boolean),
+                  })
+                }
+                placeholder="ex: empresa.com, filial.net"
+              />
+            </label>
+          </div>
 
-        <label>
-          Domínios de email (separados por vírgula)
-          <input
-            value={(settings.emailDomains || []).join(", ")}
-            onChange={(e) =>
-              setSettings({
-                ...settings,
-                emailDomains: e.target.value.split(",").map((d) => d.trim()).filter(Boolean),
-              })
-            }
-            placeholder="ex: empresa.com.br, filial.com.br"
-          />
-        </label>
-
-        <label>
-          Mapeamento do email (claim/atributo)
-          <input
-            value={settings.attributeMapping?.email || ""}
-            onChange={(e) =>
-              setSettings({
-                ...settings,
-                attributeMapping: { ...settings.attributeMapping, email: e.target.value },
-              })
-            }
-            placeholder="email ou nameid"
-          />
-        </label>
+          <label style={{ marginTop: '0.5rem' }}>
+            Mapeamento do Atributo de Email
+            <input
+              value={settings.attributeMapping?.email || ""}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  attributeMapping: { ...settings.attributeMapping, email: e.target.value },
+                })
+              }
+              placeholder="Ex: email, preferred_username, nameid"
+            />
+          </label>
+        </div>
 
         {settings.providerType === "oidc" && (
-          <div className="card" style={{ background: "#f8f8fb" }}>
-            <h4>OIDC</h4>
+          <div className="card stack" style={{ backgroundColor: "#f8fafc", border: "1px dashed var(--accent)" }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h4>OpenID Connect Configuration</h4>
+              <button
+                type="button"
+                className="secondary small"
+                onClick={() => {
+                  if (!defaultOidcCallback) return;
+                  const existing = settings.oidcRedirectUris || [];
+                  if (existing.includes(defaultOidcCallback)) return;
+                  setSettings({
+                    ...settings,
+                    oidcRedirectUris: [...existing, defaultOidcCallback],
+                  });
+                }}
+                style={{ fontSize: '0.75rem' }}
+              >
+                Auto-preencher Callback
+              </button>
+            </div>
+            
             {defaultOidcCallback && (
-              <div className="text-xs" style={{ marginBottom: "8px" }}>
-                Callback sugerida: <code>{defaultOidcCallback}</code>
+              <div style={{ fontSize: "0.75rem", padding: "0.75rem", backgroundColor: "#fff", borderRadius: "6px", border: "1px solid var(--border)" }}>
+                <p className="muted" style={{ marginBottom: '0.25rem' }}>URI de Redirecionamento (Callback):</p>
+                <code>{defaultOidcCallback}</code>
               </div>
             )}
-            <label>
-              Issuer URL
-              <input
-                value={settings.oidcIssuerUrl || ""}
-                onChange={(e) => setSettings({ ...settings, oidcIssuerUrl: e.target.value })}
-                placeholder="https://idp.exemplo.com"
-              />
-            </label>
-            <label>
-              Discovery URL (opcional)
-              <input
-                value={settings.oidcDiscoveryUrl || ""}
-                onChange={(e) => setSettings({ ...settings, oidcDiscoveryUrl: e.target.value })}
-                placeholder="https://idp.exemplo.com/.well-known/openid-configuration"
-              />
-            </label>
-            <label>
-              Client ID
-              <input
-                value={settings.oidcClientId || ""}
-                onChange={(e) => setSettings({ ...settings, oidcClientId: e.target.value })}
-              />
-            </label>
-            <label>
-              Client secret (atual: {settings.oidcClientSecretMasked || "não definido"})
-              <input
-                value={oidcSecret}
-                onChange={(e) => setOidcSecret(e.target.value)}
-                type="password"
-                placeholder="Atualize somente se necessário"
-              />
-            </label>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <label>
+                Issuer URL
+                <input
+                  value={settings.oidcIssuerUrl || ""}
+                  onChange={(e) => setSettings({ ...settings, oidcIssuerUrl: e.target.value })}
+                  placeholder="https://accounts.google.com"
+                />
+              </label>
+              <label>
+                Discovery URL (Opcional)
+                <input
+                  value={settings.oidcDiscoveryUrl || ""}
+                  onChange={(e) => setSettings({ ...settings, oidcDiscoveryUrl: e.target.value })}
+                  placeholder=".../.well-known/openid-configuration"
+                />
+              </label>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <label>
+                Client ID
+                <input
+                  value={settings.oidcClientId || ""}
+                  onChange={(e) => setSettings({ ...settings, oidcClientId: e.target.value })}
+                  placeholder="AbC123XyZ..."
+                />
+              </label>
+              <label>
+                Client Secret
+                <input
+                  value={oidcSecret}
+                  onChange={(e) => setOidcSecret(e.target.value)}
+                  type="password"
+                  placeholder={settings.oidcClientSecretMasked || "Digite o novo secret"}
+                />
+              </label>
+            </div>
+
             <label>
               Redirect URIs (uma por linha)
               <textarea
@@ -354,130 +415,137 @@ export function SSOSettings() {
                     oidcRedirectUris: e.target.value.split("\n").map((v) => v.trim()).filter(Boolean),
                   })
                 }
-                rows={4}
+                rows={3}
+                style={{ fontFamily: 'monospace', fontSize: '0.875rem' }}
               />
             </label>
-            <button
-              type="button"
-              className="btn secondary"
-              onClick={() => {
-                if (!defaultOidcCallback) return;
-                const existing = settings.oidcRedirectUris || [];
-                if (existing.includes(defaultOidcCallback)) return;
-                setSettings({
-                  ...settings,
-                  oidcRedirectUris: [...existing, defaultOidcCallback],
-                });
-              }}
-            >
-              Adicionar callback padrão
-            </button>
-            <button
-              type="button"
-              className="danger"
-              onClick={handleRemoveOIDC}
-              disabled={saving || removing}
-              style={{ marginTop: "12px" }}
-            >
-              Remover configuração OIDC
-            </button>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
+              <button
+                type="button"
+                className="secondary small"
+                onClick={handleRemoveOIDC}
+                disabled={saving || removing}
+                style={{ color: '#ef4444' }}
+              >
+                Limpar Configuração OIDC
+              </button>
+            </div>
           </div>
         )}
 
         {settings.providerType === "saml" && (
-          <div className="card" style={{ background: "#f8f8fb" }}>
-            <h4>SAML 2.0</h4>
-            <label>
-              SP Entity ID
-              <input
-                value={settings.samlSpEntityId || ""}
-                onChange={(e) => setSettings({ ...settings, samlSpEntityId: e.target.value })}
-                placeholder="ex: nexus-saml-tenant-teste"
-              />
-            </label>
-            <label>
-              Metadata URL (opcional)
-              <input
-                value={settings.samlMetadataUrl || ""}
-                onChange={(e) => setSettings({ ...settings, samlMetadataUrl: e.target.value })}
-                placeholder="https://idp.exemplo.com/metadata"
-              />
-            </label>
-            <label>
-              IdP Entity ID
-              <input
-                value={settings.samlIdpEntityId || ""}
-                onChange={(e) => setSettings({ ...settings, samlIdpEntityId: e.target.value })}
-              />
-            </label>
-            <label>
-              IdP SSO URL
-              <input
-                value={settings.samlIdpSsoUrl || ""}
-                onChange={(e) => setSettings({ ...settings, samlIdpSsoUrl: e.target.value })}
-              />
-            </label>
+          <div className="card stack" style={{ backgroundColor: "#f8fafc", border: "1px dashed var(--accent)" }}>
+            <h4>SAML 2.0 Configuration</h4>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <label>
+                SP Entity ID
+                <input
+                  value={settings.samlSpEntityId || ""}
+                  onChange={(e) => setSettings({ ...settings, samlSpEntityId: e.target.value })}
+                  placeholder="nexus-admin-sp"
+                />
+              </label>
+              <label>
+                Metadata URL (Opcional)
+                <input
+                  value={settings.samlMetadataUrl || ""}
+                  onChange={(e) => setSettings({ ...settings, samlMetadataUrl: e.target.value })}
+                  placeholder="https://idp.com/saml/metadata"
+                />
+              </label>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <label>
+                IdP Entity ID
+                <input
+                  value={settings.samlIdpEntityId || ""}
+                  onChange={(e) => setSettings({ ...settings, samlIdpEntityId: e.target.value })}
+                />
+              </label>
+              <label>
+                IdP SSO URL
+                <input
+                  value={settings.samlIdpSsoUrl || ""}
+                  onChange={(e) => setSettings({ ...settings, samlIdpSsoUrl: e.target.value })}
+                />
+              </label>
+            </div>
+
             <label>
               Certificado X.509 do IdP
               <textarea
                 value={settings.samlIdpX509Cert || ""}
                 onChange={(e) => setSettings({ ...settings, samlIdpX509Cert: e.target.value })}
-                rows={5}
+                rows={4}
+                style={{ fontFamily: 'monospace', fontSize: '0.8125rem' }}
+                placeholder="-----BEGIN CERTIFICATE----- ..."
               />
             </label>
-            <label>
-              NameID format (opcional)
-              <input
-                value={settings.samlNameIdFormat || ""}
-                onChange={(e) => setSettings({ ...settings, samlNameIdFormat: e.target.value })}
-                placeholder="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
-              />
-            </label>
-            <label>
-              Clock skew (segundos)
-              <input
-                type="number"
-                value={settings.samlClockSkewSeconds ?? ""}
-                onChange={(e) =>
-                  setSettings({ ...settings, samlClockSkewSeconds: Number(e.target.value) || undefined })
-                }
-              />
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.samlWantAssertionsSigned ?? false}
-                onChange={(e) => setSettings({ ...settings, samlWantAssertionsSigned: e.target.checked })}
-              />
-              Exigir assertions assinadas
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={settings.samlWantMessagesSigned ?? false}
-                onChange={(e) => setSettings({ ...settings, samlWantMessagesSigned: e.target.checked })}
-              />
-              Exigir mensagens assinadas
-            </label>
-            <div className="text-xs" style={{ marginTop: "8px" }}>
-              Metadata SP: <code>/auth/sso/saml/{selectedTenantId}/metadata</code>
-              <br />
-              ACS URL: <code>/auth/sso/saml/{selectedTenantId}/acs</code>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+              <label>
+                NameID Format
+                <input
+                  value={settings.samlNameIdFormat || ""}
+                  onChange={(e) => setSettings({ ...settings, samlNameIdFormat: e.target.value })}
+                  placeholder="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+                />
+              </label>
+              <label>
+                Clock Skew (Segundos)
+                <input
+                  type="number"
+                  value={settings.samlClockSkewSeconds ?? ""}
+                  onChange={(e) =>
+                    setSettings({ ...settings, samlClockSkewSeconds: Number(e.target.value) || undefined })
+                  }
+                />
+              </label>
             </div>
-            <button
-              type="button"
-              className="danger"
-              onClick={handleRemoveSAML}
-              disabled={saving || removing}
-              style={{ marginTop: "12px" }}
-            >
-              Remover configuração SAML
-            </button>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
+              <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={settings.samlWantAssertionsSigned ?? false}
+                  onChange={(e) => setSettings({ ...settings, samlWantAssertionsSigned: e.target.checked })}
+                />
+                <span style={{ fontSize: '0.8125rem' }}>Assertions Assinadas</span>
+              </label>
+              <label style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={settings.samlWantMessagesSigned ?? false}
+                  onChange={(e) => setSettings({ ...settings, samlWantMessagesSigned: e.target.checked })}
+                />
+                <span style={{ fontSize: '0.8125rem' }}>Mensagens Assinadas</span>
+              </label>
+            </div>
+
+            <div style={{ fontSize: "0.75rem", padding: "1rem", backgroundColor: "#fff", borderRadius: "8px", border: "1px solid var(--border)" }}>
+              <div style={{ marginBottom: '0.5rem' }}>SP Metadata: <code>/auth/sso/saml/{selectedTenantId}/metadata</code></div>
+              <div>ACS URL: <code>/auth/sso/saml/{selectedTenantId}/acs</code></div>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                className="secondary small"
+                onClick={handleRemoveSAML}
+                disabled={saving || removing}
+                style={{ color: '#ef4444' }}
+              >
+                Limpar Configuração SAML
+              </button>
+            </div>
           </div>
         )}
 
-        <button type="submit" disabled={saving || removing}>
-          {saving ? "Salvando..." : "Salvar configurações"}
+        <button type="submit" disabled={saving || removing} style={{ height: '48px', fontSize: '1rem', marginTop: '1rem' }}>
+          {saving ? "Salvando Alterações..." : "Salvar Todas as Configurações"}
         </button>
       </form>
     </div>
