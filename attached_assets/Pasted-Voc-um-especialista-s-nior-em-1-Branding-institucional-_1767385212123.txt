@@ -1,0 +1,121 @@
+Você é um especialista sênior em:
+1) Branding institucional e posicionamento estratégico para empresas de conformidade, regulação e gestão de risco;
+2) Marketing jurídico institucional no Brasil, respeitando integralmente o Código de Ética da OAB e o Provimento 205/2021;
+3) Arquitetura de sites estáticos modernos (alto desempenho, SEO avançado e acessibilidade);
+4) Copywriting técnico e informativo para público empresarial e gestores.
+
+Sua missão é CONCEBER E ESCREVER a estrutura completa de um site institucional estático para a empresa PRISMA, com foco em conformidade regulatória, prevenção de riscos e suporte jurídico-operacional a empresas, SEM promessas de resultado, SEM linguagem mercantilista proibida e SEM captação indevida.
+
+================================
+IDENTIDADE DA EMPRESA
+================================
+Nome: PRISMA  
+Posicionamento: Conformidade, Regulação, Prevenção de Riscos e Suporte Jurídico-Empresarial  
+Atuação inicial: São Paulo (SP), Paraná (PR), Minas Gerais (MG) e Distrito Federal (DF), com possibilidade de expansão nacional  
+Público-alvo: Empresas, operações reguladas, gestores, diretores, RH, compliance, lideranças e responsáveis técnicos  
+Tom de voz: Institucional, técnico, moderno, claro, confiável, estratégico e acessível  
+
+Contato institucional (temporário):
+- E-mail: contato@prisma.com.br
+- Telefone/WhatsApp: +55 43 99606-3751
+
+O site deve conter BOTÃO DE CONTATO fixo (header e CTA final) que direcione para:
+- WhatsApp ou ligação telefônica (tel:+5543996063751)
+
+================================
+SERVIÇOS (PILARES DE MAIOR VALOR COMERCIAL – PRIORITÁRIOS)
+================================
+
+1) Ambiental, Licenças e Regularizações
+- Licença Prévia (LP), Licença de Instalação (LI) e Licença de Operação (LO)
+- Licenças e alvarás perante CETESB, Prefeitura e Vigilância Sanitária
+- Alvará de Funcionamento
+- AVCB – Corpo de Bombeiros
+- Atestados e laudos técnicos (instalações elétricas, SPDA – ABNT)
+- Organização documental e controle de prazos regulatórios
+
+2) Regulação e Fiscalizações
+- Atuação junto à ANP
+- Suporte e orientação em fiscalizações da ANP, ANVISA e PROCON
+- Elaboração de respostas a notificações e processos administrativos (PROCON)
+- Orientação regulatória preventiva para operações sensíveis
+
+3) Trabalhista Preventivo e Conformidade Operacional
+- Orientação a gestores e lideranças
+- Rotinas preventivas trabalhistas (FGTS, controle de obrigações, convenções coletivas)
+- Conferência de folha de pagamento e cartão de ponto
+- Redução de passivos e organização interna
+
+4) NR-1 e Riscos Psicossociais (Pilar Estratégico)
+- Implantação e adequação à NR-1
+- Mapeamento e gestão de riscos psicossociais
+- Programas preventivos de saúde mental no trabalho
+- Treinamento de lideranças
+- Implementação de canal de denúncias anônimo e seguro
+- Estruturação de planos de ação e governança
+
+================================
+OBJETIVOS DO SITE
+================================
+- Ser institucional, moderno, estático e extremamente rápido
+- Comunicar claramente “o que a PRISMA faz” e “quais problemas resolve”
+- Gerar contatos qualificados via botão de contato e formulário
+- Construir autoridade e confiança
+- Excelente SEO local e temático
+- Total conformidade com as regras da OAB
+
+================================
+TECNOLOGIA RECOMENDADA
+================================
+- Framework: Astro + Tailwind CSS (preferencial) ou Next.js estático
+- Hospedagem: Cloudflare Pages, Netlify ou Vercel
+- Conteúdo: Markdown/MDX (opcional CMS leve)
+- Formulários: solução estática (ex.: Netlify Forms)
+- SEO técnico completo (sitemap, robots, canonical, Open Graph)
+- Schema.org: LegalService + LocalBusiness
+- Acessibilidade: semântica HTML, contraste, navegação por teclado
+
+================================
+ENTREGÁVEIS OBRIGATÓRIOS
+================================
+
+1) Sitemap completo do site (estrutura de páginas)
+2) Estrutura detalhada de cada página (wireframe textual)
+3) Textos completos (copy pronta) para:
+   - Home
+   - Sobre a PRISMA
+   - Hub Áreas de Atuação
+   - Páginas individuais dos serviços prioritários
+   - Página “Para quem ajudamos”
+   - Página de Conteúdos (artigos)
+   - Contato
+   - Privacidade/LGPD
+4) SEO:
+   - Palavras-chave principais e secundárias por página
+   - Titles e Meta Descriptions
+   - Slugs amigáveis
+   - Estratégia de links internos
+   - 12 ideias de artigos educativos
+   - FAQs com foco em rich snippets
+5) Diretrizes de conformidade OAB (o que evitar / o que pode)
+6) Diretrizes visuais (cores, tipografia, layout, CTAs)
+7) Checklist técnico de implementação (passo a passo)
+
+================================
+REGRAS DE ESCRITA
+================================
+- Linguagem clara, técnica e objetiva
+- Foco em prevenção, conformidade e organização
+- Sem promessas de resultado
+- Sem termos proibidos pela OAB
+- CTAs discretos e institucionais (ex.: “Entre em contato para avaliarmos sua demanda.”)
+
+================================
+FORMATO DA RESPOSTA
+================================
+- Organizar em seções numeradas
+- Textos prontos para copiar e colar
+- SEO apresentado em tabela
+- Finalizar com um resumo executivo do site e da estratégia
+
+COMECE AGORA.
