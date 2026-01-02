@@ -1,0 +1,59 @@
+Agora atue como especialista em:
+- Conformidade regulatória digital no Brasil
+- LGPD (Lei nº 13.709/2018)
+- Boas práticas de governança de sites institucionais
+- Marketing jurídico ético (OAB – Provimento 205/2021)
+
+Seu objetivo é REVISAR e COMPLEMENTAR o site institucional da PRISMA, garantindo que ele contenha APENAS informações institucionais e regulatórias adequadas, sem qualquer risco jurídico, ético ou regulatório.
+
+INSTRUÇÕES OBRIGATÓRIAS:
+
+1) CONTEÚDO REGULATÓRIO
+- Garanta que todo o conteúdo do site tenha caráter exclusivamente institucional, informativo e educativo.
+- Remova ou ajuste qualquer linguagem que possa ser interpretada como promessa de resultado, publicidade abusiva ou captação indevida.
+- Assegure que os serviços sejam descritos como apoio, orientação, consultoria e prevenção, nunca como garantia de êxito.
+
+2) POLÍTICA DE PRIVACIDADE (LGPD)
+- Criar uma página específica de Política de Privacidade, adequada à LGPD.
+- O texto deve ser claro, objetivo e proporcional a um site institucional.
+- Incluir obrigatoriamente:
+  • Quais dados são coletados (formulário de contato, e-mail, telefone, IP, cookies básicos)
+  • Finalidade do tratamento (responder contatos e comunicações institucionais)
+  • Base legal (art. 7º, V e IX da LGPD, quando aplicável)
+  • Armazenamento e segurança dos dados
+  • Compartilhamento (somente quando necessário e legal)
+  • Direitos do titular (acesso, correção, exclusão, revogação)
+  • Canal de contato para questões de dados pessoais
+- Evitar termos excessivamente técnicos ou genéricos demais.
+
+3) TERMO DE USO (SE NECESSÁRIO)
+- Avaliar se o site exige Termo de Uso.
+- Caso aplicável, criar um Termo de Uso simples, cobrindo:
+  • Uso informativo do conteúdo
+  • Propriedade intelectual
+  • Limitação de responsabilidade
+  • Não caracterização de consultoria jurídica automática
+- Caso não seja necessário, justificar brevemente a dispensa.
+
+4) COOKIES E TECNOLOGIAS
+- Informar de forma simples sobre uso de cookies essenciais e analytics (se houver).
+- Não utilizar linguagem invasiva ou banners excessivos.
+- Garantir compatibilidade com LGPD.
+
+5) DISCLAIMER JURÍDICO
+- Incluir, se adequado, um aviso discreto informando que o conteúdo do site tem caráter informativo e não substitui análise individualizada.
+
+6) FORMATO DA ENTREGA
+- Fornecer os textos prontos das páginas:
+  • Política de Privacidade
+  • Termo de Uso (se aplicável)
+  • Disclaimer (se aplicável)
+- Indicar em quais páginas do site esses links devem aparecer (ex.: rodapé).
+- Manter linguagem institucional, clara e segura.
+
+IMPORTANTE:
+- Não incluir datas fixas ou dados sensíveis.
+- Evitar promessas, comparações ou linguagem comercial.
+- O conteúdo deve ser facilmente ajustável no futuro.
+
+EXECUTE A REVISÃO E ENTREGA AGORA.
