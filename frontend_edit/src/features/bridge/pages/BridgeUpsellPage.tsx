@@ -106,6 +106,10 @@ export function BridgeUpsellPage() {
       <div className="upsell-grid">
         {plans.map((plan) => {
           const limits = (plan.metadata?.limits as Record<string, number>) || {};
+          const retentionDays = plan.retentionDays ?? limits.retentionDays;
+          const maxWebhooks = plan.maxWebhooks ?? limits.maxWebhooks;
+          const maxIntegrations = plan.maxIntegrations ?? limits.maxIntegrations;
+          const maxEventsMonth = plan.maxEventsMonth ?? limits.maxEventsMonth;
           const isCurrent = subscription?.featurePlanId === plan.id;
           return (
             <div 
@@ -147,19 +151,19 @@ export function BridgeUpsellPage() {
                 <div className="stack" style={{ gap: 'var(--space-sm)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="muted small">Retenção de Dados</span>
-                    <span className="badge info">{limits.retentionDays ?? "n/d"} dias</span>
+                    <span className="badge info">{retentionDays ?? "n/d"} dias</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="muted small">Webhooks</span>
-                    <span className="badge info">{limits.maxWebhooks ?? "n/d"}</span>
+                    <span className="badge info">{maxWebhooks ?? "n/d"}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="muted small">Integrações</span>
-                    <span className="badge info">{limits.maxIntegrations ?? "n/d"}</span>
+                    <span className="badge info">{maxIntegrations ?? "n/d"}</span>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <span className="muted small">Eventos mensais</span>
-                    <span className="badge info">{limits.maxEventsMonth ?? "n/d"}</span>
+                    <span className="badge info">{maxEventsMonth ?? "n/d"}</span>
                   </div>
                 </div>
               </div>
