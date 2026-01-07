@@ -52,38 +52,49 @@ export function BridgeUpsellPage() {
 
   return (
     <div className="stack">
-      <div className="upsell-hero">
+      <div className="upsell-hero" style={{ padding: 'var(--space-2xl)', background: 'linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-primary) 100%)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', boxShadow: 'var(--shadow-xl)' }}>
         <div className="upsell-summary">
-          <div className="badge">Nexus Bridge</div>
-          <h2>Seu acesso esta bloqueado por plano</h2>
-          <p className="muted">
-            Esta feature esta habilitada para o tenant, mas precisa de um plano ativo para liberar acesso completo.
+          <div className="badge info" style={{ marginBottom: 'var(--space-md)', padding: '6px 16px', fontSize: 'var(--font-size-sm)' }}>Acesso Premium</div>
+          <h1 style={{ fontSize: '2.5rem', marginBottom: 'var(--space-md)', lineHeight: '1.1' }}>Potencialize sua integração com o <span style={{ color: 'var(--color-primary)' }}>Nexus Bridge</span></h1>
+          <p className="muted" style={{ fontSize: 'var(--font-size-lg)', maxWidth: '600px', marginBottom: 'var(--space-lg)' }}>
+            Libere fluxos de trabalho avançados, webhooks em tempo real e maior tempo de retenção de dados.
           </p>
           {tenant ? (
-            <div className="pill-row">
-              <span className="pill">Tenant: {tenant.tenantName}</span>
-              <span className="pill">Perfil: {tenant.role}</span>
+            <div className="pill-row" style={{ marginTop: 'var(--space-md)' }}>
+              <span className="badge" style={{ background: 'rgba(255,255,255,0.05)' }}>Organização: {tenant.tenantName}</span>
+              <span className="badge" style={{ background: 'rgba(255,255,255,0.05)' }}>Nível: {tenant.role}</span>
             </div>
           ) : null}
         </div>
-        <div className="upsell-status">
-          <span className={`pill ${statusTone}`}>{statusText}</span>
-          {state?.renewalDue ? <span className="pill warning">Renovacao pendente</span> : null}
-          {subscription ? (
-            <>
-              <span className="pill">Inicio: {formatDate(subscription.startDate)}</span>
-              <span className="pill">Fim: {formatDate(subscription.endDate)}</span>
-              <span className="pill">Renova em: {formatDate(subscription.renewDate)}</span>
-            </>
-          ) : (
-            <span className="pill">Sem assinatura registrada</span>
-          )}
-          <div className="upsell-actions">
-            <Button variant="secondary" onClick={() => setShowRequest(true)}>
-              Solicitar upgrade
+        <div className="upsell-status" style={{ backgroundColor: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(10px)', padding: 'var(--space-xl)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border-light)' }}>
+          <div style={{ marginBottom: 'var(--space-lg)' }}>
+            <div className="muted small" style={{ marginBottom: 'var(--space-xs)' }}>Status do Serviço</div>
+            <span className={`badge ${statusTone}`} style={{ fontSize: 'var(--font-size-base)', padding: '8px 16px', width: '100%', justifyContent: 'center' }}>{statusText}</span>
+          </div>
+          
+          <div className="stack" style={{ gap: 'var(--space-xs)', marginBottom: 'var(--space-lg)' }}>
+            {subscription ? (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                  <span className="muted">Vigência:</span>
+                  <span>{formatDate(subscription.startDate)} - {formatDate(subscription.endDate)}</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                   <span className="muted">Renovação:</span>
+                   <span>{formatDate(subscription.renewDate)}</span>
+                </div>
+              </>
+            ) : (
+              <div className="muted small" style={{ textAlign: 'center' }}>Nenhuma assinatura ativa encontrada.</div>
+            )}
+          </div>
+
+          <div className="stack" style={{ gap: 'var(--space-sm)' }}>
+            <Button variant="primary" size="lg" fullWidth onClick={() => setShowRequest(true)}>
+              Ver Planos e Upgrade
             </Button>
-            <Button variant="primary" onClick={reloadPlans} loading={loadingPlans}>
-              Recarregar planos
+            <Button variant="ghost" fullWidth onClick={reloadPlans} loading={loadingPlans}>
+              Atualizar Status
             </Button>
           </div>
         </div>
@@ -97,22 +108,70 @@ export function BridgeUpsellPage() {
           const limits = (plan.metadata?.limits as Record<string, number>) || {};
           const isCurrent = subscription?.featurePlanId === plan.id;
           return (
-            <div key={plan.id} className={`plan-card ${isCurrent ? "highlight" : ""}`}>
-              <div>
-                <div className="badge">{plan.planCode.toUpperCase()}</div>
-                <h3>{plan.planName}</h3>
-                <p className="muted">{plan.description}</p>
-                <div className="plan-limits">
-                  <span className="pill">Retencao: {limits.retentionDays ?? "n/d"} dias</span>
-                  <span className="pill">Webhooks: {limits.maxWebhooks ?? "n/d"}</span>
-                  <span className="pill">Integracoes: {limits.maxIntegrations ?? "n/d"}</span>
-                  <span className="pill">Eventos/mes: {limits.maxEventsMonth ?? "n/d"}</span>
+            <div 
+              key={plan.id} 
+              className={`plan-card ${isCurrent ? "highlight" : ""}`}
+              style={{ 
+                position: 'relative',
+                overflow: 'hidden',
+                border: isCurrent ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                transform: isCurrent ? 'scale(1.02)' : 'none',
+                zIndex: isCurrent ? 1 : 0
+              }}
+            >
+              {isCurrent && (
+                <div style={{ 
+                  position: 'absolute', 
+                  top: '12px', 
+                  right: '-30px', 
+                  background: 'var(--color-primary)', 
+                  color: 'white', 
+                  padding: '4px 40px', 
+                  transform: 'rotate(45deg)',
+                  fontSize: '10px',
+                  fontWeight: 'bold',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
+                }}>
+                  ATUAL
+                </div>
+              )}
+              <div className="stack" style={{ gap: 'var(--space-md)' }}>
+                <div>
+                  <div className="badge" style={{ marginBottom: 'var(--space-xs)' }}>{plan.planCode.toUpperCase()}</div>
+                  <h3 style={{ fontSize: 'var(--font-size-xl)' }}>{plan.planName}</h3>
+                  <p className="muted" style={{ fontSize: 'var(--font-size-sm)', minHeight: '3em' }}>{plan.description}</p>
+                </div>
+
+                <div className="divider">Limites e Recursos</div>
+
+                <div className="stack" style={{ gap: 'var(--space-sm)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="muted small">Retenção de Dados</span>
+                    <span className="badge info">{limits.retentionDays ?? "n/d"} dias</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="muted small">Webhooks</span>
+                    <span className="badge info">{limits.maxWebhooks ?? "n/d"}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="muted small">Integrações</span>
+                    <span className="badge info">{limits.maxIntegrations ?? "n/d"}</span>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span className="muted small">Eventos mensais</span>
+                    <span className="badge info">{limits.maxEventsMonth ?? "n/d"}</span>
+                  </div>
                 </div>
               </div>
-              <div className="plan-footer">
-                <span className={`pill ${isCurrent ? "success" : "info"}`}>
-                  {isCurrent ? "Plano atual" : "Disponivel"}
-                </span>
+              <div className="plan-footer" style={{ marginTop: 'var(--space-lg)' }}>
+                <Button 
+                  variant={isCurrent ? "secondary" : "primary"} 
+                  fullWidth 
+                  disabled={isCurrent}
+                  onClick={() => setShowRequest(true)}
+                >
+                  {isCurrent ? "Plano Atual" : "Escolher este Plano"}
+                </Button>
               </div>
             </div>
           );

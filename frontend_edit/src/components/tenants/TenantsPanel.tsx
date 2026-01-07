@@ -95,75 +95,92 @@ export function TenantsPanel() {
       }
     >
       {message && <Alert variant="error">{message}</Alert>}
-      <div className="grid two">
-        <div className="list">
-          {loadingTenants && <div className="muted">Carregando organizações...</div>}
-          {!loadingTenants &&
-            tenants.map((t) => (
-              <div key={t.id} className="list-item">
-                <div className="tenant-meta" style={{ flex: 1 }}>
-                  <strong style={{ fontSize: 'var(--font-size-base)', color: 'var(--color-text-primary)' }}>{t.name}</strong>
-                  <span className="muted small" style={{ marginBottom: 'var(--space-xs)', display: 'block' }}>{t.description || "Sem descrição"}</span>
-                  <div style={{ display: 'flex', gap: 'var(--space-xs)' }}>
-                    <span className="pill" style={{ fontSize: '10px', padding: '2px 8px' }}>{t.status}</span>
-                  </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 'var(--space-md)', marginTop: 'var(--space-md)' }}>
+        {loadingTenants && <div className="muted">Carregando organizações...</div>}
+        {!loadingTenants &&
+          tenants.map((t) => (
+            <div 
+              key={t.id} 
+              className={`card ${selected?.id === t.id ? 'strong' : ''}`}
+              style={{ 
+                cursor: 'pointer', 
+                transition: 'all 0.2s ease',
+                border: selected?.id === t.id ? '2px solid var(--color-primary)' : '1px solid var(--color-border)',
+                padding: 'var(--space-md)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                gap: 'var(--space-sm)'
+              }}
+              onClick={() => selectTenant(t.id)}
+            >
+              <div className="tenant-meta">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <strong style={{ fontSize: 'var(--font-size-lg)', color: 'var(--color-text-primary)' }}>{t.name}</strong>
+                  <span className={`badge ${t.status === 'active' ? 'success' : 'warning'}`} style={{ fontSize: '10px' }}>{t.status}</span>
                 </div>
-                <Button variant="secondary" size="sm" type="button" onClick={() => selectTenant(t.id)} disabled={loadingMembers}>
-                  Gerenciar
+                <p className="muted small" style={{ marginTop: 'var(--space-xs)', minHeight: '3em' }}>{t.description || "Sem descrição"}</p>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'var(--space-sm)' }}>
+                <Button variant={selected?.id === t.id ? 'primary' : 'secondary'} size="sm" type="button" disabled={loadingMembers}>
+                  {selected?.id === t.id ? 'Selecionado' : 'Selecionar'}
                 </Button>
               </div>
-            ))}
-          {!loadingTenants && tenants.length === 0 && (
-            <div className="muted">
-              Você ainda não participa de nenhuma organização.
             </div>
-          )}
-        </div>
-        <Card strong title="Detalhes">
+          ))}
+        {!loadingTenants && tenants.length === 0 && (
+          <div className="muted">Você ainda não participa de nenhuma organização.</div>
+        )}
+      </div>
+
+      {selected && (
+        <Card strong title="Detalhes da Organização" style={{ marginTop: 'var(--space-xl)' }}>
           {loadingMembers && <div className="muted">Carregando detalhes...</div>}
-          {!loadingMembers && selected && (
+          {!loadingMembers && (
             <div className="stack">
-              <div className="pill-row" style={{ marginBottom: 'var(--space-md)' }}>
-                <span className="badge info" style={{ borderRadius: 'var(--radius-md)' }}>ID: {selected.id}</span>
-                <span className={`badge ${selected.status === 'active' ? 'success' : 'warning'}`} style={{ borderRadius: 'var(--radius-md)' }}>{selected.status}</span>
-              </div>
-              <div className="surface" style={{ padding: 'var(--space-lg)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg-tertiary)' }}>
-                <h3 style={{ marginBottom: 'var(--space-xs)' }}>{selected.name}</h3>
-                <div className="muted small" style={{ marginBottom: 'var(--space-sm)' }}>{selected.description || "Sem descrição"}</div>
-                <div className="muted small" style={{ fontSize: '11px', opacity: 0.6 }}>Criado em {formatDate(selected.created_at)}</div>
-              </div>
-              <div className="divider" />
-              <div className="stack">
-                <div className="card-title">Membros</div>
-                <div className="list">
-                  {members.map((m) => (
-                    <div key={m.userId} className="list-item">
-                      <div className="tenant-meta">
-                        <strong>{m.name}</strong>
-                        <span className="muted small">{m.email}</span>
-                        <span className="pill">Perfil: {m.role}</span>
-                      </div>
-                      {canManage && m.userId !== user?.id && (
-                        <Button
-                          variant="danger"
-                          type="button"
-                          onClick={() => setConfirmRemove({ id: m.userId, name: m.name })}
-                        >
-                          Remover
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                  {!members.length && <div className="muted">Nenhum membro listado.</div>}
+              <div className="surface" style={{ padding: 'var(--space-lg)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg-tertiary)', borderRadius: 'var(--radius-lg)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-md)' }}>
+                   <h2 style={{ margin: 0 }}>{selected.name}</h2>
+                   <div style={{ display: 'flex', gap: 'var(--space-sm)' }}>
+                     <span className="badge info">ID: {selected.id}</span>
+                     {selected.cnpj && <span className="badge info">CNPJ: {selected.cnpj}</span>}
+                   </div>
                 </div>
+                <div className="muted" style={{ marginBottom: 'var(--space-md)' }}>{selected.description || "Sem descrição"}</div>
+                <div className="muted small" style={{ opacity: 0.6 }}>Criado em {formatDate(selected.created_at)}</div>
+              </div>
+              
+              <div className="divider">Membros da Equipe</div>
+              
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 'var(--space-md)' }}>
+                {members.map((m) => (
+                  <div key={m.userId} className="list-item" style={{ padding: 'var(--space-md)', background: 'var(--color-bg-primary)' }}>
+                    <div className="tenant-meta" style={{ flex: 1 }}>
+                      <strong style={{ display: 'block' }}>{m.name}</strong>
+                      <span className="muted small" style={{ display: 'block', marginBottom: 'var(--space-xs)' }}>{m.email}</span>
+                      <span className="badge" style={{ fontSize: '10px' }}>{m.role}</span>
+                    </div>
+                    {canManage && m.userId !== user?.id && (
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setConfirmRemove({ id: m.userId, name: m.name });
+                        }}
+                      >
+                        Remover
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                {!members.length && <div className="muted">Nenhum membro listado.</div>}
               </div>
             </div>
-          )}
-          {!loadingMembers && !selected && (
-            <div className="muted">Selecione uma organização para ver os detalhes.</div>
           )}
         </Card>
-      </div>
+      )}
       <Modal
         open={Boolean(confirmRemove)}
         title="Remover membro"
