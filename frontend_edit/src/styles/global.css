@@ -40,26 +40,27 @@ a:hover {
 }
 
 .card {
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .card.strong {
-  background: rgba(15, 23, 42, 0.95);
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-border-light);
 }
 
 .card-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 16px;
+  gap: var(--space-sm);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--space-lg);
+  color: var(--color-text-primary);
 }
 
 .card-title-right {

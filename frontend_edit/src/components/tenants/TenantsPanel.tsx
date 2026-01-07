@@ -101,13 +101,15 @@ export function TenantsPanel() {
           {!loadingTenants &&
             tenants.map((t) => (
               <div key={t.id} className="list-item">
-                <div className="tenant-meta">
-                  <strong>{t.name}</strong>
-                  <span className="muted small">{t.description || "Sem descrição"}</span>
-                  <span className="pill">Situação: {t.status}</span>
+                <div className="tenant-meta" style={{ flex: 1 }}>
+                  <strong style={{ fontSize: 'var(--font-size-base)', color: 'var(--color-text-primary)' }}>{t.name}</strong>
+                  <span className="muted small" style={{ marginBottom: 'var(--space-xs)', display: 'block' }}>{t.description || "Sem descrição"}</span>
+                  <div style={{ display: 'flex', gap: 'var(--space-xs)' }}>
+                    <span className="pill" style={{ fontSize: '10px', padding: '2px 8px' }}>{t.status}</span>
+                  </div>
                 </div>
-                <Button variant="secondary" type="button" onClick={() => selectTenant(t.id)} disabled={loadingMembers}>
-                  Abrir
+                <Button variant="secondary" size="sm" type="button" onClick={() => selectTenant(t.id)} disabled={loadingMembers}>
+                  Gerenciar
                 </Button>
               </div>
             ))}
@@ -121,15 +123,14 @@ export function TenantsPanel() {
           {loadingMembers && <div className="muted">Carregando detalhes...</div>}
           {!loadingMembers && selected && (
             <div className="stack">
-              <div className="pill-row">
-                <span className="pill">ID: {selected.id}</span>
-                <span className="pill">Situação: {selected.status}</span>
-                {selected.cnpj && <span className="pill">CNPJ: {selected.cnpj}</span>}
+              <div className="pill-row" style={{ marginBottom: 'var(--space-md)' }}>
+                <span className="badge info" style={{ borderRadius: 'var(--radius-md)' }}>ID: {selected.id}</span>
+                <span className={`badge ${selected.status === 'active' ? 'success' : 'warning'}`} style={{ borderRadius: 'var(--radius-md)' }}>{selected.status}</span>
               </div>
-              <div className="surface">
-                <strong>{selected.name}</strong>
-                <div className="muted small">{selected.description || "Sem descrição"}</div>
-                <div className="muted small">Criado em {formatDate(selected.created_at)}</div>
+              <div className="surface" style={{ padding: 'var(--space-lg)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-bg-tertiary)' }}>
+                <h3 style={{ marginBottom: 'var(--space-xs)' }}>{selected.name}</h3>
+                <div className="muted small" style={{ marginBottom: 'var(--space-sm)' }}>{selected.description || "Sem descrição"}</div>
+                <div className="muted small" style={{ fontSize: '11px', opacity: 0.6 }}>Criado em {formatDate(selected.created_at)}</div>
               </div>
               <div className="divider" />
               <div className="stack">
