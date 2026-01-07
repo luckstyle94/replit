@@ -8,7 +8,7 @@ interface TenantContextValue {
   loading: boolean;
   error: string | null;
   refresh: () => Promise<void>;
-  selectTenant: (tenantId: number) => Promise<void>;
+  selectTenant: (tenantId: number | null) => Promise<void>;
 }
 
 const TenantContext = createContext<TenantContextValue | undefined>(undefined);
@@ -38,15 +38,16 @@ export function TenantProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   const selectTenant = useCallback(
-    async (tenantId: number) => {
+    async (tenantId: number | null) => {
       if (!token) return;
+      const targetTenantId = tenantId ?? 0;
       setLoading(true);
       setError(null);
       try {
         const data = await request<UserContextResponse>("/me/tenant", {
           method: "POST",
           token,
-          body: { tenantId },
+          body: { tenantId: targetTenantId },
         });
         setContext(data);
       } catch (err) {

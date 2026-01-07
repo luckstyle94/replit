@@ -56,7 +56,7 @@ export function HomeMenuPage() {
             <Button 
               variant="secondary" 
               size="sm" 
-              onClick={() => selectTenant(0)}
+              onClick={() => selectTenant(null)}
               style={{ marginLeft: 'var(--space-md)' }}
             >
               Trocar Organização
