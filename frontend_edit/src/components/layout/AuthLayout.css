@@ -1,0 +1,97 @@
+.auth-layout {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #030712 0%, #0f172a 50%, #030712 100%);
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-layout::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-layout-wide .auth-container {
+  max-width: 920px;
+}
+
+.auth-layout-wide .auth-header {
+  max-width: 560px;
+  margin: 0 auto var(--space-2xl);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-2xl);
+}
+
+.auth-logo {
+  display: inline-block;
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-lg);
+  font-size: var(--font-size-sm);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+  letter-spacing: 0.5px;
+}
+
+.auth-header h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-md);
+  font-weight: 800;
+}
+
+.auth-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-weight: 400;
+}
+
+.auth-content {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 640px) {
+  .auth-layout {
+    padding: var(--space-md);
+  }
+
+  .auth-container {
+    max-width: 100%;
+  }
+
+  .auth-content {
+    padding: var(--space-xl);
+  }
+
+  .auth-header h1 {
+    font-size: var(--font-size-2xl);
+  }
+}
