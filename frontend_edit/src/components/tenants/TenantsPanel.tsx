@@ -154,26 +154,28 @@ export function TenantsPanel() {
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 'var(--space-md)' }}>
                 {members.map((m) => (
-                  <div key={m.userId} className="list-item" style={{ padding: 'var(--space-md)', background: 'var(--color-bg-primary)' }}>
-                    <div className="tenant-meta" style={{ flex: 1 }}>
-                      <strong style={{ display: 'block' }}>{m.name}</strong>
-                      <span className="muted small" style={{ display: 'block', marginBottom: 'var(--space-xs)' }}>{m.email}</span>
-                      <span className="badge" style={{ fontSize: '10px' }}>{m.role}</span>
-                    </div>
-                    {canManage && m.userId !== user?.id && (
-                      <Button
-                        variant="danger"
-                        size="sm"
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setConfirmRemove({ id: m.userId, name: m.name });
-                        }}
-                      >
-                        Remover
-                      </Button>
-                    )}
+              <div key={m.userId} className="list-item" style={{ padding: 'var(--space-md)', background: 'var(--color-bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-md)' }}>
+                <div className="tenant-meta" style={{ flex: 1, minWidth: 0 }}>
+                  <strong style={{ display: 'block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.name}</strong>
+                  <span className="muted small" style={{ display: 'block', marginBottom: 'var(--space-xs)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.email}</span>
+                  <span className="badge" style={{ fontSize: '10px' }}>{m.role}</span>
+                </div>
+                {canManage && m.userId !== user?.id && (
+                  <div style={{ flexShrink: 0 }}>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setConfirmRemove({ id: m.userId, name: m.name });
+                      }}
+                    >
+                      Remover
+                    </Button>
                   </div>
+                )}
+              </div>
                 ))}
                 {!members.length && <div className="muted">Nenhum membro listado.</div>}
               </div>
