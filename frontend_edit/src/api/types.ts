@@ -119,6 +119,12 @@ export interface FeaturePlan {
   planCode: string;
   planName: string;
   description: string;
+  retentionDays?: number;
+  maxEventsMonth?: number;
+  maxRetries?: number;
+  maxWebhooks?: number;
+  maxIntegrations?: number;
+  features?: string[];
   isActive: boolean;
   sortOrder: number;
   metadata?: Record<string, unknown>;

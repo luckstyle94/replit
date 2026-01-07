@@ -95,6 +95,10 @@ export function BridgeUpsellPage() {
       <div className="upsell-grid">
         {plans.map((plan) => {
           const limits = (plan.metadata?.limits as Record<string, number>) || {};
+          const retentionDays = plan.retentionDays ?? limits.retentionDays;
+          const maxWebhooks = plan.maxWebhooks ?? limits.maxWebhooks;
+          const maxIntegrations = plan.maxIntegrations ?? limits.maxIntegrations;
+          const maxEventsMonth = plan.maxEventsMonth ?? limits.maxEventsMonth;
           const isCurrent = subscription?.featurePlanId === plan.id;
           return (
             <div key={plan.id} className={`plan-card ${isCurrent ? "highlight" : ""}`}>
@@ -103,10 +107,10 @@ export function BridgeUpsellPage() {
                 <h3>{plan.planName}</h3>
                 <p className="muted">{plan.description}</p>
                 <div className="plan-limits">
-                  <span className="pill">Retencao: {limits.retentionDays ?? "n/d"} dias</span>
-                  <span className="pill">Webhooks: {limits.maxWebhooks ?? "n/d"}</span>
-                  <span className="pill">Integracoes: {limits.maxIntegrations ?? "n/d"}</span>
-                  <span className="pill">Eventos/mes: {limits.maxEventsMonth ?? "n/d"}</span>
+                  <span className="pill">Retencao: {retentionDays ?? "n/d"} dias</span>
+                  <span className="pill">Webhooks: {maxWebhooks ?? "n/d"}</span>
+                  <span className="pill">Integracoes: {maxIntegrations ?? "n/d"}</span>
+                  <span className="pill">Eventos/mes: {maxEventsMonth ?? "n/d"}</span>
                 </div>
               </div>
               <div className="plan-footer">
