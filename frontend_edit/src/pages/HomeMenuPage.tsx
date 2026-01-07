@@ -51,9 +51,16 @@ export function HomeMenuPage() {
         </p>
         {tenant ? (
           <div className="pill-row">
-            <span className="pill">Tenant: {tenant.tenantName}</span>
+            <span className="pill">Organização: {tenant.tenantName}</span>
             <span className="pill">Perfil: {tenant.role}</span>
-            <span className="pill">Status: {tenant.status}</span>
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              onClick={() => selectTenant(0)}
+              style={{ marginLeft: 'var(--space-md)' }}
+            >
+              Trocar Organização
+            </Button>
           </div>
         ) : null}
       </div>
