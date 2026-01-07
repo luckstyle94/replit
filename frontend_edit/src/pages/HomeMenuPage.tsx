@@ -15,7 +15,6 @@ export function HomeMenuPage() {
 
   const tenant = context?.tenant ?? null;
   const tenants = context?.tenants ?? [];
-  const selectedTenantId = context?.selectedTenantId ?? 0;
   const { entitlements, loading: loadingEntitlements, error: entitlementsError } = useFeatureEntitlements(tenant?.tenantId);
 
   const bridgeEntitlement = entitlements.find((item) => item.feature.key === "NEXUS_BRIDGE");
@@ -62,28 +61,46 @@ export function HomeMenuPage() {
       {error ? <Alert variant="error">{error}</Alert> : null}
       {entitlementsError ? <Alert variant="error">{entitlementsError}</Alert> : null}
 
-      {!tenant && tenants.length > 1 ? (
-        <Card title="Selecione o tenant">
-          <div className="stack">
-            <div className="muted">Você participa de mais de uma organização. Selecione uma para continuar.</div>
-            <div className="pill-row">
-              <select
-                className="input"
-                value={selectedTenantId || ""}
-                onChange={(event) => {
-                  const id = Number(event.target.value);
-                  if (id > 0) {
-                    void selectTenant(id);
-                  }
-                }}
-              >
-                <option value="">Escolher tenant</option>
-                {tenants.map((t) => (
-                  <option key={t.tenantId} value={t.tenantId}>
-                    {t.tenantName}
-                  </option>
-                ))}
-              </select>
+      {!tenant && tenants.length > 0 ? (
+        <Card title="Selecione a organização para continuar">
+          <div className="stack" style={{ gap: 'var(--space-lg)' }}>
+            <div className="muted" style={{ fontSize: 'var(--font-size-sm)' }}>
+              Você participa de {tenants.length} {tenants.length === 1 ? 'organização' : 'organizações'}. Clique em um card para acessar.
+            </div>
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', 
+              gap: 'var(--space-md)' 
+            }}>
+              {tenants.map((t) => (
+                <div 
+                  key={t.tenantId} 
+                  className="card clickable"
+                  style={{ 
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    border: '1px solid var(--color-border)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 'var(--space-sm)',
+                    padding: 'var(--space-lg)'
+                  }}
+                  onClick={() => selectTenant(t.tenantId)}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <h3 style={{ fontSize: 'var(--font-size-lg)', margin: 0, color: 'var(--color-primary)' }}>{t.tenantName}</h3>
+                    <span className={`badge ${t.status === 'active' ? 'success' : 'warning'}`} style={{ fontSize: '10px' }}>
+                      {t.status}
+                    </span>
+                  </div>
+                  <div className="muted small" style={{ opacity: 0.7 }}>
+                    ID: {t.tenantId}
+                  </div>
+                  <div style={{ marginTop: 'auto', paddingTop: 'var(--space-sm)' }}>
+                    <Button variant="secondary" size="sm" fullWidth>Acessar Organização</Button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </Card>
