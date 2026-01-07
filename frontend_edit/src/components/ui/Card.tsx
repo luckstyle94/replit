@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, HTMLAttributes } from "react";
 
 export function Card({
   title,
@@ -6,15 +6,19 @@ export function Card({
   strong = false,
   children,
   className,
+  ...props
 }: {
   title?: ReactNode;
   right?: ReactNode;
   strong?: boolean;
   children: ReactNode;
   className?: string;
-}) {
+} & HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={`card ${strong ? "strong" : ""} ${className || ""}`.trim()}>
+    <div 
+      {...props}
+      className={`card ${strong ? "strong" : ""} ${className || ""}`.trim()}
+    >
       {title ? (
         <div className="card-title">
           <span>{title}</span>
